@@ -16,7 +16,7 @@
    eJxjYBgFo2D4AiYqqRkFgw+MxtvAAwAWgAAH
   </data>
  </layer>
- <objectgroup id="4" name="walls_objects">
+ <objectgroup id="4" name="walls">
   <object id="1" x="0" y="0" width="64" height="1280"/>
   <object id="2" x="64" y="1216" width="1216" height="64"/>
   <object id="3" x="1216" y="0" width="64" height="1216"/>

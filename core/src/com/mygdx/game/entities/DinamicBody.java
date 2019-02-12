@@ -1,5 +1,6 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,17 +15,19 @@ public abstract class DinamicBody extends Sprite {
     protected Fixture fixture;
     protected World world;
     public boolean toDestroy;
+    protected BodyDef bdef ;
+    protected FixtureDef fdef ;
 
     public DinamicBody(TiledMap map, World world, Rectangle bounds) {
         this.map = map;
         this.bounds = bounds;
         this.world = world;
         toDestroy = false;
+        bdef = new BodyDef();
+        fdef = new FixtureDef();
+    }
 
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-
+    public void createBody(){
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.position.set((bounds.getX() + bounds.getWidth() / 2), (bounds.getY() + bounds.getHeight() / 2) );
         body = world.createBody(bdef);
@@ -33,15 +36,17 @@ public abstract class DinamicBody extends Sprite {
         body_shape.setRadius(bounds.getWidth()/2);
         body_shape.setPosition(new Vector2(bounds.getWidth()/2,bounds.getHeight()/2) );
         fdef.shape = body_shape;
-        fdef.friction = 0.1f;
-        fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 1;
-
         body.createFixture(fdef).setUserData(this);
     }
+
 
     public void destroyBody(){
         world.destroyBody(body);
     }
 
+    public abstract void onContact(Contact contact);
+
+    public abstract void draw(float dt, Batch batch);
+    public abstract void postDraw(float dt, Batch batch);
+    public abstract void update(float dt);
 }
