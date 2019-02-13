@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.manager.ResourceManager;
 
 public class Player extends DinamicBody {
 
@@ -16,10 +17,12 @@ public class Player extends DinamicBody {
     public boolean inputFire = false;
 
     public Player(TiledMap map, World world, Rectangle bounds) {
-        super(map, world, bounds);
+        super(map, world, bounds, ResourceManager.getAtlas("").findRegion(""));
         fdef.filter.categoryBits=2;
         fdef.filter.maskBits=1;
         createBody();
+
+        setPosition(bounds.x/2);
     }
 
     @Override

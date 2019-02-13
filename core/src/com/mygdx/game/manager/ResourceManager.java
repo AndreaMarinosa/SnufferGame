@@ -12,19 +12,19 @@ public class ResourceManager {
 
     public static void loadAllResources() {
         VisUI.load();
-        /*
+
         // Sounds
-        assets.load("audio/sounds/sound.ogg", Sound.class);
+      //  assets.load("audio/sounds/sound.ogg", Sound.class);
 
         // Music
-        assets.load("audio/music/music.mp3", Music.class);
+     //   assets.load("audio/music/music.mp3", Music.class);
 
         // Texture
-        assets.load("texture/gui/life.png", Texture.class);
+     //   assets.load("texture/gui/life.png", Texture.class);
 
         // Texture Atlas
-        assets.load("texture/player/player_idle.pack", TextureAtlas.class);
-      */
+        assets.load("personajes/personajePrincipal/mainCharacter.pack", TextureAtlas.class);
+
 
     }
 

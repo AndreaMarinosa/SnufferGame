@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class Enemy extends DinamicBody {
     public Enemy(TiledMap map, World world, Rectangle bounds) {
-        super(map, world, bounds);
+        super(map, world, bounds, ResourceManager.getAtlas("").findRegion(""));
     }
 
     public abstract void onHitPlayer();

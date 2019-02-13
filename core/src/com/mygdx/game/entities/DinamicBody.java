@@ -2,6 +2,7 @@ package com.mygdx.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -18,7 +19,8 @@ public abstract class DinamicBody extends Sprite {
     protected BodyDef bdef ;
     protected FixtureDef fdef ;
 
-    public DinamicBody(TiledMap map, World world, Rectangle bounds) {
+    public DinamicBody(TiledMap map, World world, Rectangle bounds, TextureAtlas.AtlasRegion region) {
+        super(region);
         this.map = map;
         this.bounds = bounds;
         this.world = world;

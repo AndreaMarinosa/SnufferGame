@@ -25,12 +25,12 @@ public class LevelManager {
         this.gameScreen = gameScreen;
         loadMap();
 
-        player = new Player(map, gameScreen.world,new Rectangle(120,120,32,32));
+        player = new Player(map, gameScreen.world,new Rectangle(120,120,32/2,32/2));
     }
 
     private void loadMap(){
 
-        map = new TmxMapLoader().load("level/level1/level1.tmx");
+        map = new TmxMapLoader().load("level/Mapas/Mapa1.tmx");
         gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, 1);
 
         gameScreen.world.setContactListener(new ContactManager());
@@ -41,7 +41,7 @@ public class LevelManager {
         Body body;
 
         //GRAOUND
-        for (MapObject object : map.getLayers().get("walls").getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : map.getLayers().get("wall").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2), (rect.getY() + rect.getHeight() / 2) );
