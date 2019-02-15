@@ -65,7 +65,7 @@ public class LevelManager {
     }
 
     public void postRender(float dt, SpriteBatch bach) {
-
+        player.postDraw(dt,bach);
     }
 
 }
