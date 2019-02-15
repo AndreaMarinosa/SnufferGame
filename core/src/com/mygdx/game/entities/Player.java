@@ -1,5 +1,6 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -63,7 +64,9 @@ public class Player extends DinamicBody {
 
     @Override
     public void draw(float dt, Batch batch) {
-        super.draw(batch);
+        //super.draw(batch);
+        TextureRegion tg =getFrame(dt);
+        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6,tg.getRegionHeight()/6);
     }
 
     @Override
@@ -76,8 +79,8 @@ public class Player extends DinamicBody {
         menageInput();
 
         // seccion texturas
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        setRegion(getFrame(dt));
+        //setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        //setRegion(getFrame(dt));
         // END seccion texturas
     }
 
