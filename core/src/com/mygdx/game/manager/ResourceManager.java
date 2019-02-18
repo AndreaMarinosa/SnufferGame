@@ -23,7 +23,8 @@ public class ResourceManager {
      //   assets.load("texture/gui/life.png", Texture.class);
 
         // Texture Atlas
-        assets.load("personajes/personajePrincipal/mainCharacter.pack", TextureAtlas.class);
+        assets.load("core/assets/personajes/personajePrincipal/mainCharacter.pack", TextureAtlas.class);
+        assets.load("core/assets/objetos/bala/bala.pack", TextureAtlas.class);
 
 
     }

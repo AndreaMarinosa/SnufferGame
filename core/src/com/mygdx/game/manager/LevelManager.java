@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.entities.Bala;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.enemy.Enem1;
 import com.mygdx.game.screen.GameScreen;
@@ -19,18 +20,22 @@ import com.mygdx.game.screen.GameScreen;
 public class LevelManager {
     private GameScreen gameScreen;
     public Array<Enem1> enemies;
+    public Array<Bala> balas;
     public Player player;
     public TiledMap map;
     public LevelManager(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         loadMap();
 
-        player = new Player(map, gameScreen.world,new Rectangle(120,120,32/2,32/2));
+        player = new Player(map, gameScreen.world,new Rectangle(120,120,32/2,32/2),  gameScreen);
     }
 
     private void loadMap(){
 
-        map = new TmxMapLoader().load("level/Mapas/Mapa1.tmx");
+        balas = new Array<Bala>();
+        enemies = new Array<Enem1>();
+
+        map = new TmxMapLoader().load("core/assets/level/Mapas/Mapa1.tmx");
         gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, 1);
 
         gameScreen.world.setContactListener(new ContactManager());
@@ -57,10 +62,16 @@ public class LevelManager {
 
     public void update(float dt){
         player.update(dt);
+        for (Bala bala: balas){
+            bala.update(dt);
+        }
     }
 
     public void render(float dt, SpriteBatch bach) {
         player.draw(dt,bach);
+        for (Bala bala: balas){
+            bala.draw(dt, bach);
+        }
 
     }
 

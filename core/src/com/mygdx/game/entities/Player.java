@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.manager.ResourceManager;
+import com.mygdx.game.screen.GameScreen;
 
 public class Player extends DinamicBody {
 
@@ -16,6 +17,13 @@ public class Player extends DinamicBody {
     public boolean inputDown = false;
     public boolean inputLeft = false;
     public boolean inputRight = false;
+
+    public boolean inputDispararUp = false;
+    public boolean inputDispararRight = false;
+    public boolean inputDispararLeft = false;
+    public boolean inputDispararDown = false;
+
+    private GameScreen gameScreen;
 
     //Estados
     private enum Estados {
@@ -34,17 +42,19 @@ public class Player extends DinamicBody {
 
     private float progresoAnimacion = 0;
 
-    public Player(TiledMap map, World world, Rectangle bounds) {
-        super(map, world, bounds, ResourceManager.getAtlas("personajes/personajePrincipal/mainCharacter.pack").findRegion("frente"));
+    public Player(TiledMap map, World world, Rectangle bounds, GameScreen gameScreen) {
+        super(map, world, bounds, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegion("frente"));
+
+        this.gameScreen = gameScreen;
 
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 1;
         createBody();
 
-        animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("personajes/personajePrincipal/mainCharacter.pack").findRegions("frente"));
-        animacionEspaldas = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("personajes/personajePrincipal/mainCharacter.pack").findRegions("espalda"));
-        animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("personajes/personajePrincipal/mainCharacter.pack").findRegions("derecha"));
-        animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("personajes/personajePrincipal/mainCharacter.pack").findRegions("izquierda"));
+        animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("frente"));
+        animacionEspaldas = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("espalda"));
+        animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("derecha"));
+        animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("izquierda"));
 
         setPosition(bounds.x / 2, bounds.y / 2);
 
@@ -105,6 +115,7 @@ public class Player extends DinamicBody {
 
     private void menageInput() {
 
+        // JUGADOR
         if (inputUp) {
             body.setLinearVelocity(body.getLinearVelocity().x, 200);
             estadoActual = Estados.ESPALDAS;
@@ -127,6 +138,21 @@ public class Player extends DinamicBody {
         }
         if (!inputLeft && !inputRight) {
             body.setLinearVelocity(0, body.getLinearVelocity().y);
+        }
+
+
+        if(inputDispararRight || inputDispararLeft || inputDispararUp || inputDispararDown){
+            if(inputDispararRight){
+                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 0));
+            }else if(inputDispararLeft){
+                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 1));
+            }else if(inputDispararUp){
+                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 2));
+            }else if(inputDispararDown){
+                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 3));
+            }
+
+
         }
 
     }

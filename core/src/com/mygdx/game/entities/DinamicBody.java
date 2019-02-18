@@ -20,7 +20,7 @@ public abstract class DinamicBody extends Sprite {
     protected FixtureDef fdef ;
 
     public DinamicBody(TiledMap map, World world, Rectangle bounds, TextureAtlas.AtlasRegion region) {
-        super(region);
+//        super(region);
         this.map = map;
         this.bounds = bounds;
         this.world = world;
@@ -35,7 +35,7 @@ public abstract class DinamicBody extends Sprite {
         body = world.createBody(bdef);
 
         CircleShape body_shape = new CircleShape();
-        body_shape.setRadius(bounds.getWidth()/2);
+        body_shape.setRadius(bounds.getWidth()/1.7f);
         body_shape.setPosition(new Vector2(bounds.getWidth()/2,bounds.getHeight()/2) );
         fdef.shape = body_shape;
         body.createFixture(fdef).setUserData(this);

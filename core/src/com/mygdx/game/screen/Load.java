@@ -28,7 +28,7 @@ public class Load implements Screen {
 
     public Load(SGame game) {
         this.game = game;
-        splashTexture = new Texture(Gdx.files.internal("texture/images/splashscreen.jpg"));
+        splashTexture = new Texture(Gdx.files.internal("core/assets/texture/images/splashscreen.jpg"));
         splashImage = new Image(splashTexture);
         splashImage.setPosition(0, 0);
         splashImage.setDrawable(new TextureRegionDrawable(new TextureRegion(splashTexture)));

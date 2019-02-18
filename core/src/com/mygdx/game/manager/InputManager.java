@@ -31,6 +31,19 @@ public class InputManager  implements InputProcessor {
             case Input.Keys.W:
                 gameScreen.levelManager.player.inputUp = true;
                 break;
+            case Input.Keys.UP:
+                gameScreen.levelManager.player.inputDispararUp = true;
+                break;
+            case Input.Keys.DOWN:
+                gameScreen.levelManager.player.inputDispararDown = true;
+                break;
+            case Input.Keys.RIGHT:
+                gameScreen.levelManager.player.inputDispararRight = true;
+                break;
+            case Input.Keys.LEFT:
+                gameScreen.levelManager.player.inputDispararLeft = true;
+                break;
+
         }
         return true;
     }
@@ -49,6 +62,18 @@ public class InputManager  implements InputProcessor {
                 break;
             case Input.Keys.W:
                 gameScreen.levelManager.player.inputUp = false;
+                break;
+            case Input.Keys.UP:
+                gameScreen.levelManager.player.inputDispararUp = false;
+                break;
+            case Input.Keys.DOWN:
+                gameScreen.levelManager.player.inputDispararDown = false;
+                break;
+            case Input.Keys.RIGHT:
+                gameScreen.levelManager.player.inputDispararRight = false;
+                break;
+            case Input.Keys.LEFT:
+                gameScreen.levelManager.player.inputDispararLeft = false;
                 break;
         }
         return true;
