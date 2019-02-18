@@ -15,7 +15,7 @@ public class Bala extends DinamicBody {
 
     private boolean active;
     private float shootTime;
-    private float shootDuration=3;
+    private float shootDuration=1;
     private float velocidad= 600f;
 
     private short direccion;
@@ -50,11 +50,16 @@ public class Bala extends DinamicBody {
         System.out.println("en bala");
     }
 
+    /**
+     * Dibuja la bala en la pantalla
+     * @param dt
+     * @param batch
+     */
     @Override
     public void draw(float dt, Batch batch) {
         //super.draw(batch);
         TextureRegion tg =getFrame(dt);
-        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/4,tg.getRegionHeight()/4);
+        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6,tg.getRegionHeight()/6);
     }
 
     @Override
@@ -62,6 +67,10 @@ public class Bala extends DinamicBody {
 
     }
 
+    /**
+     * Metodo que te actualiza la direccion a donde atacas
+     * @param dt
+     */
     @Override
     public void update(float dt) {
 

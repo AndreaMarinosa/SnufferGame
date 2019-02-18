@@ -61,10 +61,6 @@ public class Player extends DinamicBody {
         ultimoEstado = Estados.FRENTE;
         estadoActual = Estados.FRENTE;
 
-        System.out.println("animacionFrente: "+animacionFrente.getKeyFrames().length);
-        System.out.println("animacionEspaldas: "+animacionEspaldas.getKeyFrames().length);
-        System.out.println("animacionDerecha: "+animacionDerecha.getKeyFrames().length);
-        System.out.println("animacionIzquierda: "+animacionIzquierda.getKeyFrames().length);
     }
 
     @Override
@@ -113,6 +109,9 @@ public class Player extends DinamicBody {
     }
 
 
+    /**
+     * Metodo que aniade los metodos cuando un usuario se mueve o dispara
+     */
     private void menageInput() {
 
         // JUGADOR

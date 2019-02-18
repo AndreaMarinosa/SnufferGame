@@ -47,7 +47,6 @@ public abstract class DinamicBody extends Sprite {
     }
 
     public abstract void onContact(Contact contact);
-
     public abstract void draw(float dt, Batch batch);
     public abstract void postDraw(float dt, Batch batch);
     public abstract void update(float dt);

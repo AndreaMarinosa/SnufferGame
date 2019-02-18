@@ -25,8 +25,9 @@ public class ResourceManager {
         // Texture Atlas
         assets.load("core/assets/personajes/personajePrincipal/mainCharacter.pack", TextureAtlas.class);
         assets.load("core/assets/objetos/bala/bala.pack", TextureAtlas.class);
-
-
+        // assets.load("core/assets/personajes/enemigoUno/enemigoUno.pack", TextureAtlas.class);
+        // assets.load("core/assets/personajes/enemigoDos/enemigoDos.pack", TextureAtlas.class);
+        // assets.load("core/assets/personajes/enemigoTres/enemigoTres.pack", TextureAtlas.class);
     }
 
     public static void finishLoading() {

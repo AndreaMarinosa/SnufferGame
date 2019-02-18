@@ -26,6 +26,11 @@ public class Load implements Screen {
     private boolean splashDone = false;
     private SGame game;
 
+    private enum Estados {
+        MENU, CONFIGURATION, LOSE, EXIT, GAME
+    }
+    private Estados ultimoEstado = Estados.MENU;
+
     public Load(SGame game) {
         this.game = game;
         splashTexture = new Texture(Gdx.files.internal("core/assets/texture/images/splashscreen.jpg"));
@@ -38,12 +43,36 @@ public class Load implements Screen {
         gamePort = new FitViewport(1080, 720, gamecam);
         stage = new Stage(gamePort);
         stage.addActor(splashImage);
+
+
     }
 
     private void update(float dt) {
         if (ResourceManager.update()) {
             if (splashDone) {
-                game.setScreen(new GameScreen(game));
+                switch (ultimoEstado){
+                    case MENU:{
+
+                        game.setScreen(new MainMenuScreen(game));
+                        break;
+                    }
+                    case CONFIGURATION:{
+
+                        break;
+                    }
+                    case LOSE:{
+
+                        break;
+                    }
+                    case EXIT:{
+                        System.exit(0);
+                        break;
+                    }
+                    case GAME:{
+                        game.setScreen(new GameScreen(game));
+                    }
+                }
+
             }
         }
     }
