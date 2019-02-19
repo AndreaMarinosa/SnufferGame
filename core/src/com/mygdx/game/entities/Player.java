@@ -1,17 +1,26 @@
 package com.mygdx.game.entities;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.util.Constant;
 
 public class Player extends DinamicBody {
+
+    //Estados
+    private enum Estados {
+        FRENTE, ESPALDAS, IZQUIERDA, DERECHA
+    }
 
     public boolean inputUp = false;
     public boolean inputDown = false;
@@ -23,14 +32,12 @@ public class Player extends DinamicBody {
     public boolean inputDispararLeft = false;
     public boolean inputDispararDown = false;
 
-    private GameScreen gameScreen;
-
     public int contadorEnemigos;
+    public float velocidad = 200f;
 
-    //Estados
-    private enum Estados {
-        FRENTE, ESPALDAS, IZQUIERDA, DERECHA
-    }
+    private GameScreen gameScreen;
+    private float fireRate = 0.2f;
+    private float fireLast = 0;
 
     private Estados ultimoEstado;
     private Estados estadoActual;
@@ -40,8 +47,10 @@ public class Player extends DinamicBody {
     private Animation<TextureRegion> animacionEspaldas;
     private Animation<TextureRegion> animacionDerecha;
     private Animation<TextureRegion> animacionIzquierda;
-
     private float progresoAnimacion = 0;
+
+    private float vidaBase = 100;
+    private float vida;
 
     public Player(TiledMap map, World world, Rectangle bounds, GameScreen gameScreen) {
         super(map, world, bounds, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegion("frente"));
@@ -63,6 +72,7 @@ public class Player extends DinamicBody {
         estadoActual = Estados.FRENTE;
 
         contadorEnemigos = 0;
+        vida = vidaBase; // 100 de vidaBase por defecto
 
     }
 
@@ -74,18 +84,39 @@ public class Player extends DinamicBody {
     @Override
     public void draw(float dt, Batch batch) {
         //super.draw(batch);
-        TextureRegion tg =getFrame(dt);
-        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6,tg.getRegionHeight()/6);
+        TextureRegion tg = getFrame(dt);
+        batch.draw(tg, body.getPosition().x, body.getPosition().y, (tg.getRegionWidth() / 6) / Constant.PPM
+                , (tg.getRegionHeight() / 6) / Constant.PPM);
     }
 
     @Override
     public void postDraw(float dt, Batch batch) {
 
+        // Para la barra de vida
+        Gdx.gl.glLineWidth(3);
+        gameScreen.shapeRenderer.setProjectionMatrix(gameScreen.cameraManager.cam.combined);
+        gameScreen.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        gameScreen.shapeRenderer.setColor(Color.RED);
+        gameScreen.shapeRenderer.line(
+                new Vector2(body.getPosition().x + 0 / Constant.PPM, body.getPosition().y + 20 / Constant.PPM),
+                new Vector2(body.getPosition().x + 16 / Constant.PPM, body.getPosition().y + 20 / Constant.PPM));
+        gameScreen.shapeRenderer.setColor(Color.WHITE);
+        gameScreen.shapeRenderer.line(
+
+                new Vector2(body.getPosition().x - 0 / Constant.PPM, body.getPosition().y + 20 / Constant.PPM),
+                new Vector2((body.getPosition().x - 0 / Constant.PPM) + (16 * (vida / vidaBase)) / Constant.PPM, body.getPosition().y + 20 / Constant.PPM));
+        gameScreen.shapeRenderer.end();
+        Gdx.gl.glLineWidth(1);
     }
 
     @Override
     public void update(float dt) {
         menageInput();
+
+        // Controlar balas
+        if (fireLast >= 0) {
+            fireLast -= dt;
+        }
 
         // seccion texturas
         //setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
@@ -95,6 +126,7 @@ public class Player extends DinamicBody {
 
     /**
      * Metodo para coger el frae de cada animacion
+     *
      * @param dt
      * @return
      */
@@ -116,28 +148,27 @@ public class Player extends DinamicBody {
         }
     }
 
-
     /**
      * Metodo que aniade los metodos cuando un usuario se mueve o dispara
      */
     private void menageInput() {
 
+
         // JUGADOR
         if (inputUp) {
-            body.setLinearVelocity(body.getLinearVelocity().x, 200);
+            body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
             estadoActual = Estados.ESPALDAS;
         } else if (inputDown) {
             estadoActual = Estados.FRENTE;
-            body.setLinearVelocity(body.getLinearVelocity().x, -200);
+            body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
         }
-
 
         if (inputLeft) {
             estadoActual = Estados.IZQUIERDA;
-            body.setLinearVelocity(-200, body.getLinearVelocity().y);
+            body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
         } else if (inputRight) {
             estadoActual = Estados.DERECHA;
-            body.setLinearVelocity(200, body.getLinearVelocity().y);
+            body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
         }
 
         if (!inputUp && !inputDown) {
@@ -147,19 +178,33 @@ public class Player extends DinamicBody {
             body.setLinearVelocity(0, body.getLinearVelocity().y);
         }
 
+        if (fireLast <= 0) {
 
-        if(inputDispararRight || inputDispararLeft || inputDispararUp || inputDispararDown){
-            if(inputDispararRight){
-                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 0));
-            }else if(inputDispararLeft){
-                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 1));
-            }else if(inputDispararUp){
-                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 2));
-            }else if(inputDispararDown){
-                gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 3));
+            if (inputDispararRight) {
+                gameScreen.levelManager.balas.add(
+                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 0));
+                fireLast = fireRate;
+                estadoActual = Estados.DERECHA;
+
+            } else if (inputDispararLeft) {
+                gameScreen.levelManager.balas.add(
+                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 1));
+                fireLast = fireRate;
+                estadoActual = Estados.IZQUIERDA;
+
+            } else if (inputDispararUp) {
+                gameScreen.levelManager.balas.add(
+                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 2));
+                fireLast = fireRate;
+                estadoActual = Estados.ESPALDAS;
+
+            } else if (inputDispararDown) {
+                gameScreen.levelManager.balas.add(
+                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 3));
+                fireLast = fireRate;
+                estadoActual = Estados.FRENTE;
             }
         }
-
     }
 
 

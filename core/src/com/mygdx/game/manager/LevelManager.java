@@ -1,6 +1,5 @@
 package com.mygdx.game.manager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -16,28 +16,34 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.entities.Bala;
 import com.mygdx.game.entities.Enemy;
 import com.mygdx.game.entities.Player;
-import com.mygdx.game.entities.enemy.Enem1;
+import com.mygdx.game.objetos.generadores.GeneradorEnemigo;
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.util.Constant;
 
 public class LevelManager {
-    public Array<Enem1> enemies;
+    public Array<Enemy> enemies;
     public Array<Bala> balas;
     public Player player;
     public TiledMap map;
     public mapas estadoMapa = mapas.MAPA1;
     private GameScreen gameScreen;
 
+    private GeneradorEnemigo gEnemigo; // Generados de enemigos
+
     public LevelManager(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         loadMap();
 
-        player = new Player(map, gameScreen.world, new Rectangle(120, 120, 32 / 2, 32 / 2), gameScreen);
+        player = new Player(map, gameScreen.world, new Rectangle(120/ Constant.PPM, 120/ Constant.PPM,
+                (32 / 2)/ Constant.PPM, (32 / 2)/ Constant.PPM), gameScreen);
+
+        gEnemigo = new GeneradorEnemigo(gameScreen, 10, 1, new Vector2(176, 336));
     }
 
     private void loadMap() {
 
         balas = new Array<Bala>();
-        enemies = new Array<Enem1>();
+        enemies = new Array<Enemy>();
 
         switch (estadoMapa) {
             case MAPA1: {
@@ -62,7 +68,7 @@ public class LevelManager {
                 break;
         }
 
-        gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, 1);
+        gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, (1/ Constant.PPM));
         gameScreen.world.setContactListener(new ContactManager());
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -72,10 +78,12 @@ public class LevelManager {
         for (MapObject object : map.getLayers().get("wall").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2), (rect.getY() + rect.getHeight() / 2));
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Constant.PPM,
+                    (rect.getY() + rect.getHeight() / 2) / Constant.PPM);
 
             body = gameScreen.world.createBody(bdef);
-            shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
+            shape.setAsBox((rect.getWidth() / 2) / Constant.PPM,
+                    (rect.getHeight() / 2) / Constant.PPM);
             fdef.shape = shape;
             fdef.filter.categoryBits = 1;
             body.createFixture(fdef);
@@ -85,7 +93,22 @@ public class LevelManager {
     public void update(float dt) {
         player.update(dt);
         for (Bala bala : balas) {
-            bala.update(dt);
+            if (bala.toDestroy){
+                bala.destroyBody();
+                balas.removeValue(bala, true);
+            } else{
+                bala.update(dt);
+            }
+        }
+
+        gEnemigo.update(dt);
+        for (Enemy enemigo: enemies){
+            if (enemigo.toDestroy){
+                enemigo.destroyBody();
+                enemies.removeValue(enemigo, true);
+            } else {
+                enemigo.update(dt);
+            }
         }
 
     }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.manager.ResourceManager;
+import com.mygdx.game.manager.SoundManager;
 
 public class Bala extends DinamicBody {
 
@@ -45,11 +46,19 @@ public class Bala extends DinamicBody {
 
         setPosition(bounds.x / 2, bounds.y / 2);
 
+        SoundManager.playBala();
     }
 
     @Override
     public void onContact(Contact contact) {
-        System.out.println("en bala");
+
+        if(contact.getFixtureA().getFilterData().maskBits==1){
+            System.out.println("A es pared");
+            toDestroy = true;
+        } else if (contact.getFixtureB().getFilterData().maskBits==1){
+            System.out.println("B es pared");
+            toDestroy = true;
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -23,6 +24,7 @@ public class GameScreen implements Screen {
     private SGame game;
     private InputManager inputManager;
     private InputMultiplexer multiplexer;
+    public static ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public GameScreen(SGame game) {
         this.game = game;

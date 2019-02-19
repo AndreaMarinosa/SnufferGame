@@ -18,7 +18,7 @@ public class ConfigurationManager {
 	/**
 	 * Activa o desactiva el sonido
 	 */
-	public static void EnableSound(boolean enable){
+	public static void enableSound(boolean enable){
 		prefs.putBoolean("sound", enable);
 		// para que se escriba en el archivo de preferencias
 		prefs.flush();

@@ -7,12 +7,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.util.Constant;
 
 public abstract class DinamicBody extends Sprite {
 
     protected TiledMap map;
     protected Rectangle bounds;
-    protected Body body;
+    public Body body;
     protected Fixture fixture;
     protected World world;
     public boolean toDestroy;
@@ -35,7 +36,7 @@ public abstract class DinamicBody extends Sprite {
         body = world.createBody(bdef);
 
         CircleShape body_shape = new CircleShape();
-        body_shape.setRadius(bounds.getWidth()/1.7f);
+        body_shape.setRadius((bounds.getWidth()/1.7f)/ Constant.PPM);
         body_shape.setPosition(new Vector2(bounds.getWidth()/2,bounds.getHeight()/2) );
         fdef.shape = body_shape;
         body.createFixture(fdef).setUserData(this);

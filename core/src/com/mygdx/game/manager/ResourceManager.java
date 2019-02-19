@@ -15,11 +15,11 @@ public class ResourceManager {
         VisUI.load();
 
         // Sounds
-        assets.load("core/audio/sounds/sonidoAtaque.ogg", Sound.class);
+        assets.load("core/assets/audio/sounds/sonidoAtaque.ogg", Sound.class);
 
-      //  Gdx.audio.newSound(Gdx.files.internal("core/audio/sounds/sonidoAtaque.ogg")).play(1);
+      //  Gdx.audio.newSound(Gdx.files.internal("core/assets/audio/sounds/sonidoAtaque.ogg")).play(1);
 
-      //  Gdx.audio.newSound(Gdx.files.internal("core/audio/sounds/sonidoAtaque.ogg")).dispose();
+      //  Gdx.audio.newSound(Gdx.files.internal("core/assets/audio/sounds/sonidoAtaque.ogg")).dispose();
 
                 // Music
      //   assets.load("audio/music/music.mp3", Music.class);

@@ -13,6 +13,8 @@ public class CameraManager {
     public CameraManager(LevelManager levelManager) {
         this.levelManager = levelManager;
         cam = new OrthographicCamera();
-        port = new FitViewport(Constant.SCREEN_WIDTH,Constant.SCREEN_HEIGHT, cam);
+        port = new FitViewport(Constant.SCREEN_WIDTH/ Constant.PPM,
+                Constant.SCREEN_HEIGHT/ Constant.PPM,
+                cam);
     }
 }

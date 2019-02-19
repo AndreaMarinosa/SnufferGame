@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.Enemy;
-import com.mygdx.game.entities.Player;
 import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.screen.GameScreen;
 
@@ -27,15 +26,10 @@ public class Enem1 extends Enemy {
     private Enem1.Estados estadoActual;
 
 
-    //Estados
-    private enum Estados {
-        FRENTE, ESPALDAS, IZQUIERDA, DERECHA
-    }
-
-    public Enem1(TiledMap map, World world, Rectangle bounds) {
+    public Enem1(TiledMap map, World world, Rectangle bounds,GameScreen screen) {
         super(map, world, bounds);
-
-        this.gameScreen = gameScreen;
+        this.gameScreen=screen;
+        this.gameScreen = screen;
 
         fdef.filter.categoryBits = 6;
         fdef.filter.maskBits = 1;
@@ -47,8 +41,8 @@ public class Enem1 extends Enemy {
         animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoUno/enemigoUno.pack").findRegions("izquierda"));
 
 
-        ultimoEstado = Enem1.Estados.FRENTE;
-        estadoActual = Enem1.Estados.FRENTE;
+        ultimoEstado = Estados.FRENTE;
+        estadoActual = Estados.FRENTE;
 
     }
 
@@ -60,7 +54,7 @@ public class Enem1 extends Enemy {
     @Override
     public void draw(float dt, Batch batch) {
         TextureRegion tg = getFrame(dt);
-        batch.draw(tg ,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6,tg.getRegionHeight()/6);
+        batch.draw(tg, body.getPosition().x, body.getPosition().y, tg.getRegionWidth() / 6, tg.getRegionHeight() / 6);
     }
 
     @Override
@@ -70,7 +64,18 @@ public class Enem1 extends Enemy {
 
     @Override
     public void update(float dt) {
-
+        if(body.getPosition().x<gameScreen.levelManager.player.body.getPosition().x){
+            body.setLinearVelocity(210, body.getLinearVelocity().y);
+        }else
+        if(body.getPosition().x>gameScreen.levelManager.player.body.getPosition().x){
+            body.setLinearVelocity(-210, body.getLinearVelocity().y);
+        }
+        if(body.getPosition().y<gameScreen.levelManager.player.body.getPosition().y){
+            body.setLinearVelocity(body.getLinearVelocity().x, 210);
+        }else
+        if(body.getPosition().y>gameScreen.levelManager.player.body.getPosition().y){
+            body.setLinearVelocity(body.getLinearVelocity().x, -210);
+        }
     }
 
     @Override
@@ -85,6 +90,7 @@ public class Enem1 extends Enemy {
 
     /**
      * Metodo para coger el frae de cada animacion
+     *
      * @param dt
      * @return
      */
@@ -104,5 +110,10 @@ public class Enem1 extends Enemy {
             default:
                 return animacionFrente.getKeyFrame(progresoAnimacion, true);
         }
+    }
+
+    //Estados
+    private enum Estados {
+        FRENTE, ESPALDAS, IZQUIERDA, DERECHA
     }
 }
