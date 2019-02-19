@@ -1,5 +1,6 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,10 +14,10 @@ import com.mygdx.game.manager.ResourceManager;
 
 public class Bala extends DinamicBody {
 
-    private boolean active;
-    private float shootTime;
-    private float shootDuration=1;
-    private float velocidad= 600f;
+    public boolean active;
+    public float shootTime;
+    public float shootDuration=3;
+    public float velocidad= 600f;
 
     private short direccion;
 
@@ -31,6 +32,7 @@ public class Bala extends DinamicBody {
     public Bala(TiledMap map, World world, Rectangle bounds, short direccion) {
         super(map, world, bounds, null);
 
+        active = false;
         this.direccion = direccion;
         fdef.filter.categoryBits = 4;
         fdef.filter.maskBits = 1;
@@ -89,6 +91,7 @@ public class Bala extends DinamicBody {
             case 3: //ABAJO
                 body.setLinearVelocity(new Vector2(0, -velocidad));
                 break;
+
         }
 
         // seccion texturas
@@ -97,6 +100,11 @@ public class Bala extends DinamicBody {
         // END seccion texturas
     }
 
+    /**
+     * Coge la animación del ataque
+     * @param dt
+     * @return
+     */
     public TextureRegion getFrame(float dt) {
 
         switch (direccion) {

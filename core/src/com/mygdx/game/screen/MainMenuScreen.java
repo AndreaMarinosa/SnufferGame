@@ -36,6 +36,7 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
+        // si pulsa el boton play, que le lleve a jugar
         VisTextButton playButton = new VisTextButton("PLAY");
         playButton.addListener(new ClickListener() {
             @Override
@@ -59,15 +60,16 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 VisUI.dispose();
+                System.exit(0);
                 // Salir del juego
             }
         });
 
-        VisLabel aboutLabel = new VisLabel("Prueba\n Andrea Mariñosa");
+        VisLabel aboutLabel = new VisLabel("Menu\n Andrea Mariñosa");
 
         // Añade filas a la tabla y añade los componentes
         table.row();
-        table.add(playButton).center().width(200).height(100).pad(5);
+        table.add(playButton).center().width(200).height(50).pad(5);
         table.row();
         table.add(configButton).center().width(200).height(50).pad(5);
         table.row();
@@ -80,7 +82,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(255, 255, 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Pinta la UI en la pantalla

@@ -25,12 +25,13 @@ public class Player extends DinamicBody {
 
     private GameScreen gameScreen;
 
+    public int contadorEnemigos;
+
     //Estados
     private enum Estados {
         FRENTE, ESPALDAS, IZQUIERDA, DERECHA
     }
 
-    ;
     private Estados ultimoEstado;
     private Estados estadoActual;
 
@@ -61,6 +62,8 @@ public class Player extends DinamicBody {
         ultimoEstado = Estados.FRENTE;
         estadoActual = Estados.FRENTE;
 
+        contadorEnemigos = 0;
+
     }
 
     @Override
@@ -90,6 +93,11 @@ public class Player extends DinamicBody {
         // END seccion texturas
     }
 
+    /**
+     * Metodo para coger el frae de cada animacion
+     * @param dt
+     * @return
+     */
     public TextureRegion getFrame(float dt) {
 
         progresoAnimacion = estadoActual == ultimoEstado ? progresoAnimacion + dt : 0;
@@ -150,8 +158,6 @@ public class Player extends DinamicBody {
             }else if(inputDispararDown){
                 gameScreen.levelManager.balas.add(new Bala(map,world,new Rectangle(body.getPosition().x , body.getPosition().y,10,10), (short) 3));
             }
-
-
         }
 
     }

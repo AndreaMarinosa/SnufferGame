@@ -1,5 +1,6 @@
 package com.mygdx.game.manager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -14,9 +15,13 @@ public class ResourceManager {
         VisUI.load();
 
         // Sounds
-      //  assets.load("audio/sounds/sound.ogg", Sound.class);
+        assets.load("core/audio/sounds/sonidoAtaque.ogg", Sound.class);
 
-        // Music
+      //  Gdx.audio.newSound(Gdx.files.internal("core/audio/sounds/sonidoAtaque.ogg")).play(1);
+
+      //  Gdx.audio.newSound(Gdx.files.internal("core/audio/sounds/sonidoAtaque.ogg")).dispose();
+
+                // Music
      //   assets.load("audio/music/music.mp3", Music.class);
 
         // Texture
@@ -25,9 +30,9 @@ public class ResourceManager {
         // Texture Atlas
         assets.load("core/assets/personajes/personajePrincipal/mainCharacter.pack", TextureAtlas.class);
         assets.load("core/assets/objetos/bala/bala.pack", TextureAtlas.class);
-        // assets.load("core/assets/personajes/enemigoUno/enemigoUno.pack", TextureAtlas.class);
-        // assets.load("core/assets/personajes/enemigoDos/enemigoDos.pack", TextureAtlas.class);
-        // assets.load("core/assets/personajes/enemigoTres/enemigoTres.pack", TextureAtlas.class);
+        assets.load("core/assets/personajes/enemigoUno/enemigoUno.pack", TextureAtlas.class);
+        assets.load("core/assets/personajes/enemigoDos/enemigoDos.pack", TextureAtlas.class);
+        assets.load("core/assets/personajes/enemigoTres/enemigoTres.pack", TextureAtlas.class);
     }
 
     public static void finishLoading() {
