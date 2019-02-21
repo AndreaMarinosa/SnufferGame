@@ -8,7 +8,7 @@ public class SoundManager {
 
     public static void playBala(){
         if(ConfigurationManager.isSoundEnabled()) {
-            soundBala.play();
+            soundBala.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.5f));
         }
     }
 }

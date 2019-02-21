@@ -11,6 +11,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mygdx.game.SGame;
+import com.mygdx.game.manager.LevelManager;
 
 public class MainMenuScreen implements Screen {
     SGame game;
@@ -41,7 +42,7 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa1.tmx"));
                 dispose();
             }
         });
@@ -51,6 +52,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Ir a la pantalla de configuración
+                game.setScreen(new ConfigurationScreen(game));
                 dispose();
             }
         });

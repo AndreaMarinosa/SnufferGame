@@ -5,5 +5,5 @@ public class Constant {
     public static final int SCREEN_HEIGHT = 768/2;
 
     public static final int ENEMIGOS_NIVEL = 50;
-    public static final int PPM = 1; // Para escalar el juego
+    public static final float PPM = 90; // Para escalar el juego
 }

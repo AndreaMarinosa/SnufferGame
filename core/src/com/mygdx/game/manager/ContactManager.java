@@ -11,13 +11,13 @@ public class ContactManager implements ContactListener {
     public void beginContact(Contact contact) {
         if (contact.getFixtureA().getUserData() instanceof DinamicBody){
             ((DinamicBody)contact.getFixtureA().getUserData()).onContact(contact);
-            System.out.println("Contacto!");
+
         }
         if (contact.getFixtureB().getUserData() instanceof DinamicBody){
             ((DinamicBody)contact.getFixtureB().getUserData()).onContact(contact);
-            System.out.println("Contacto!");
+
         }
-        System.out.println("algun contacto...");
+
     }
 
     @Override

@@ -17,6 +17,8 @@ import com.mygdx.game.util.Constant;
 
 public class Player extends DinamicBody {
 
+    public int aniquilados = 0; // Contador de enemigos matados
+
     //Estados
     private enum Estados {
         FRENTE, ESPALDAS, IZQUIERDA, DERECHA
@@ -33,7 +35,7 @@ public class Player extends DinamicBody {
     public boolean inputDispararDown = false;
 
     public int contadorEnemigos;
-    public float velocidad = 200f;
+    public float velocidad = 2f;
 
     private GameScreen gameScreen;
     private float fireRate = 0.2f;
@@ -58,7 +60,7 @@ public class Player extends DinamicBody {
         this.gameScreen = gameScreen;
 
         fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 1;
+        fdef.filter.maskBits =  1+8+16;// 1 + 6 (1 = muros, 6 = enemigos)
         createBody();
 
         animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("frente"));
@@ -78,12 +80,33 @@ public class Player extends DinamicBody {
 
     @Override
     public void onContact(Contact contact) {
-        System.out.println("en player");
+
+        if (contact.getFixtureA().getFilterData().categoryBits == 8){
+            vida -= 0.5f;
+        } else if (contact.getFixtureB().getFilterData().categoryBits == 8) {
+            vida -= 0.5f;
+        }
+
+        if (contact.getFixtureB().getFilterData().categoryBits == 16) {
+            vida -= 10f;
+            System.out.println("asdfa");
+        } else if (contact.getFixtureA().getFilterData().categoryBits == 16) {
+            vida -=10f;
+            System.out.println("sasdf");
+        }
+
+        if ((contact.getFixtureA().getFilterData().categoryBits == 32)) {
+            vida += 1f;
+        } else if (contact.getFixtureA().getFilterData().categoryBits == 16) {
+            vida += 1f;
+        }
     }
 
     @Override
     public void draw(float dt, Batch batch) {
         //super.draw(batch);
+
+       // gameScreen.font.draw(batch, ""+aniquilados, body.getPosition().x + 30/ Constant.PPM, body.getPosition().y );
         TextureRegion tg = getFrame(dt);
         batch.draw(tg, body.getPosition().x, body.getPosition().y, (tg.getRegionWidth() / 6) / Constant.PPM
                 , (tg.getRegionHeight() / 6) / Constant.PPM);
@@ -91,7 +114,6 @@ public class Player extends DinamicBody {
 
     @Override
     public void postDraw(float dt, Batch batch) {
-
         // Para la barra de vida
         Gdx.gl.glLineWidth(3);
         gameScreen.shapeRenderer.setProjectionMatrix(gameScreen.cameraManager.cam.combined);
@@ -112,6 +134,10 @@ public class Player extends DinamicBody {
     @Override
     public void update(float dt) {
         menageInput();
+
+        if (vida <= 0) {
+            System.out.println("muerte");
+        }
 
         // Controlar balas
         if (fireLast >= 0) {
@@ -182,25 +208,25 @@ public class Player extends DinamicBody {
 
             if (inputDispararRight) {
                 gameScreen.levelManager.balas.add(
-                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 0));
+                        new Bala(map, world, new Rectangle(body.getPosition().x* Constant.PPM, body.getPosition().y* Constant.PPM, 10, 10), (short) 0));
                 fireLast = fireRate;
                 estadoActual = Estados.DERECHA;
 
             } else if (inputDispararLeft) {
                 gameScreen.levelManager.balas.add(
-                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 1));
+                        new Bala(map, world, new Rectangle(body.getPosition().x* Constant.PPM, body.getPosition().y* Constant.PPM, 10, 10), (short) 1));
                 fireLast = fireRate;
                 estadoActual = Estados.IZQUIERDA;
 
             } else if (inputDispararUp) {
                 gameScreen.levelManager.balas.add(
-                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 2));
+                        new Bala(map, world, new Rectangle(body.getPosition().x* Constant.PPM, body.getPosition().y* Constant.PPM, 10, 10), (short) 2));
                 fireLast = fireRate;
                 estadoActual = Estados.ESPALDAS;
 
             } else if (inputDispararDown) {
                 gameScreen.levelManager.balas.add(
-                        new Bala(map, world, new Rectangle(body.getPosition().x, body.getPosition().y, 10, 10), (short) 3));
+                        new Bala(map, world, new Rectangle(body.getPosition().x* Constant.PPM, body.getPosition().y* Constant.PPM, 10, 10), (short) 3));
                 fireLast = fireRate;
                 estadoActual = Estados.FRENTE;
             }

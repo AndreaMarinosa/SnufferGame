@@ -12,7 +12,7 @@ import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.util.Constant;
 
-public class Enem1 extends Enemy {
+public class Enem2 extends Enemy {
 
     // Animaciones
     private Animation<TextureRegion> animacionFrente;
@@ -23,23 +23,24 @@ public class Enem1 extends Enemy {
     private GameScreen gameScreen;
     private float progresoAnimacion = 0;
 
-    private Enem1.Estados ultimoEstado;
-    private Enem1.Estados estadoActual;
+    private Enem2.Estados ultimoEstado;
+    private Enem2.Estados estadoActual;
 
 
-    public Enem1(TiledMap map, World world, Rectangle bounds,GameScreen screen) {
+    public Enem2(TiledMap map, World world, Rectangle bounds,GameScreen screen) {
         super(map, world, bounds);
         this.gameScreen=screen;
         this.gameScreen = screen;
 
         fdef.filter.categoryBits = 8;
-        fdef.filter.maskBits = 1 + 2 + 4+8; // 1 muro, 2 player, 4 bala
+        fdef.filter.maskBits = 1 + 2 + 4 + 8; // 1 muro, 2 player, 4 bala
         createBody();
 
-        animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoUno/enemigoUno.pack").findRegions("frente"));
-        animacionEspaldas = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoUno/enemigoUno.pack").findRegions("espalda"));
-        animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoUno/enemigoUno.pack").findRegions("derecha"));
-        animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoUno/enemigoUno.pack").findRegions("izquierda"));
+        animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoDos/enemigoDos.pack").findRegions("frente"));
+        animacionEspaldas = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoDos/enemigoDos.pack").findRegions("espalda"));
+        animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoDos/enemigoDos.pack").findRegions("derecha"));
+        animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoDos/enemigoDos.pack").findRegions("izquierda"));
+
 
         ultimoEstado = Estados.FRENTE;
         estadoActual = Estados.FRENTE;
@@ -70,15 +71,16 @@ public class Enem1 extends Enemy {
 
     @Override
     public void update(float dt) {
-
         if(body.getPosition().x<gameScreen.levelManager.player.body.getPosition().x){
             body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
-        }else if(body.getPosition().x>gameScreen.levelManager.player.body.getPosition().x){
+        }
+        else if(body.getPosition().x>gameScreen.levelManager.player.body.getPosition().x){
             body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
         }
-        if(body.getPosition().y<gameScreen.levelManager.player.body.getPosition().y){
+        if (body.getPosition().y<gameScreen.levelManager.player.body.getPosition().y){
             body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
-        }else if(body.getPosition().y>gameScreen.levelManager.player.body.getPosition().y){
+        }
+        else if(body.getPosition().y>gameScreen.levelManager.player.body.getPosition().y){
             body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
         }
     }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.SGame;
+import com.mygdx.game.manager.ConfigurationManager;
 import com.mygdx.game.manager.ResourceManager;
 
 public class Load implements Screen {
@@ -29,6 +30,7 @@ public class Load implements Screen {
     private enum Estados {
         MENU, CONFIGURATION, LOSE, EXIT, GAME
     }
+
     private Estados ultimoEstado = Estados.MENU;
 
     public Load(SGame game) {
@@ -50,28 +52,8 @@ public class Load implements Screen {
     private void update(float dt) {
         if (ResourceManager.update()) {
             if (splashDone) {
-                switch (ultimoEstado){
-                    case MENU:{
-
-                        game.setScreen(new MainMenuScreen(game));
-                        break;
-                    }
-                    case CONFIGURATION:{
-
-                        break;
-                    }
-                    case LOSE:{
-
-                        break;
-                    }
-                    case EXIT:{
-                        System.exit(0);
-                        break;
-                    }
-                    case GAME:{
-                        game.setScreen(new GameScreen(game));
-                    }
-                }
+                game.setScreen(new MainMenuScreen(game));
+                this.dispose();
 
             }
         }
@@ -108,7 +90,7 @@ public class Load implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        gamePort.update(width,height);
+        gamePort.update(width, height);
     }
 
     @Override

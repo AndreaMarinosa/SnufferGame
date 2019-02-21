@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" nextobjectid="53">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" nextobjectid="55">
  <tileset firstgid="1" source="sin_nombre.tsx"/>
  <layer name="background" width="36" height="24">
   <data encoding="base64" compression="zlib">
@@ -8,16 +8,16 @@
  </layer>
  <layer name="elementos" width="36" height="24">
   <data encoding="base64" compression="zlib">
-   eJxjYBi6wAWIY4hU60dLh9AQ2Ay0A0bBgAKjgXbAKBgFaGColqWjYHiD0bJyFIyCUTCUAAC4jQHd
+   eJxjYBgcQJUMPS5AHEOkWj8yzB8MwGagHTAKBhQYDbQDRsEoQANDtSwdBcMbjJaVo2AUjIKhBACYgwIC
   </data>
  </layer>
- <objectgroup name="cofres" visible="0">
+ <objectgroup name="cofres">
   <object id="9" x="16" y="16" width="16" height="16"/>
   <object id="10" x="192" y="208" width="16" height="16"/>
   <object id="11" x="16" y="336" width="16" height="16"/>
   <object id="40" x="512" y="176" width="16" height="16"/>
  </objectgroup>
- <objectgroup name="wall" visible="0">
+ <objectgroup name="wall">
   <object id="13" x="0" y="0" width="576" height="16"/>
   <object id="17" x="160" y="16" width="48" height="16"/>
   <object id="18" x="448" y="64" width="32" height="32"/>
@@ -42,6 +42,15 @@
   <object id="49" x="320" y="304" width="80" height="32"/>
  </objectgroup>
  <objectgroup name="generador">
-  <object id="52" x="176" y="32" width="16" height="16"/>
+  <object id="53" x="176" y="32" width="16" height="16">
+   <properties>
+    <property name="tipo" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="54" x="544" y="16" width="16" height="16">
+   <properties>
+    <property name="tipo" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

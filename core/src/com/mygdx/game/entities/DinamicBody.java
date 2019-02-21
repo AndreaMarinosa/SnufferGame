@@ -32,12 +32,12 @@ public abstract class DinamicBody extends Sprite {
 
     public void createBody(){
         bdef.type = BodyDef.BodyType.DynamicBody;
-        bdef.position.set((bounds.getX() + bounds.getWidth() / 2), (bounds.getY() + bounds.getHeight() / 2) );
+        bdef.position.set((bounds.getX() + bounds.getWidth() / 2)/ Constant.PPM, (bounds.getY() + bounds.getHeight() / 2)/ Constant.PPM );
         body = world.createBody(bdef);
 
         CircleShape body_shape = new CircleShape();
         body_shape.setRadius((bounds.getWidth()/1.7f)/ Constant.PPM);
-        body_shape.setPosition(new Vector2(bounds.getWidth()/2,bounds.getHeight()/2) );
+        body_shape.setPosition(new Vector2(bounds.getWidth()/2/ Constant.PPM,bounds.getHeight()/2/ Constant.PPM) );
         fdef.shape = body_shape;
         body.createFixture(fdef).setUserData(this);
     }

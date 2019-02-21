@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.screen.MainMenuScreen;
 
 public class InputManager  implements InputProcessor {
     private GameScreen gameScreen;
@@ -43,6 +44,10 @@ public class InputManager  implements InputProcessor {
             case Input.Keys.LEFT:
                 gameScreen.levelManager.player.inputDispararLeft = true;
                 break;
+            case Input.Keys.ESCAPE:
+                LevelManager.nuevoJuego();
+                gameScreen.game.setScreen(new MainMenuScreen(gameScreen.game));
+                gameScreen.dispose();
 
         }
         return true;

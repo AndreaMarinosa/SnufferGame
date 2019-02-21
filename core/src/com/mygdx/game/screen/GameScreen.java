@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -19,18 +20,19 @@ public class GameScreen implements Screen {
     public final LevelManager levelManager;
     public final CameraManager cameraManager;
     public final Box2DDebugRenderer b2dr;
+    public BitmapFont font = new BitmapFont();
     public final World world;
     public OrthogonalTiledMapRenderer mapRenderer;
-    private SGame game;
+    public SGame game;
     private InputManager inputManager;
     private InputMultiplexer multiplexer;
     public static ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-    public GameScreen(SGame game) {
+    public GameScreen(SGame game, String mapa) {
         this.game = game;
         gameOver=false;
         world = new World(new Vector2(0, 0), true);
-        levelManager = new LevelManager(this);
+        levelManager = new LevelManager(this, mapa);
         cameraManager = new CameraManager(levelManager);
         b2dr = new Box2DDebugRenderer();
         cameraManager.cam.position.set(cameraManager.port.getWorldWidth() / 2,cameraManager.port.getWorldHeight() / 2, 0);

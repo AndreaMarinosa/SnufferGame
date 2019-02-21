@@ -12,13 +12,14 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.manager.SoundManager;
+import com.mygdx.game.util.Constant;
 
 public class Bala extends DinamicBody {
 
     public boolean active;
     public float shootTime;
     public float shootDuration=3;
-    public float velocidad= 600f;
+    public float velocidad= 5f;
 
     private short direccion;
 
@@ -36,7 +37,7 @@ public class Bala extends DinamicBody {
         active = false;
         this.direccion = direccion;
         fdef.filter.categoryBits = 4;
-        fdef.filter.maskBits = 1;
+        fdef.filter.maskBits = 1 + 8; // 1 muros, 6 enemigos
         createBody();
 
         animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaBaj"));
@@ -44,20 +45,17 @@ public class Bala extends DinamicBody {
         animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaDech"));
         animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaIzq"));
 
-        setPosition(bounds.x / 2, bounds.y / 2);
+        setPosition(bounds.x / Constant.PPM, bounds.y / Constant.PPM);
 
         SoundManager.playBala();
     }
 
     @Override
     public void onContact(Contact contact) {
-
-        if(contact.getFixtureA().getFilterData().maskBits==1){
-            System.out.println("A es pared");
-            toDestroy = true;
-        } else if (contact.getFixtureB().getFilterData().maskBits==1){
-            System.out.println("B es pared");
-            toDestroy = true;
+        if(contact.getFixtureA().getFilterData().categoryBits==1 || contact.getFixtureA().getFilterData().categoryBits==8){
+            toDestroy=true;
+        }else if(contact.getFixtureB().getFilterData().categoryBits==1 || contact.getFixtureB().getFilterData().categoryBits==8){
+            toDestroy=true;
         }
     }
 
@@ -70,7 +68,7 @@ public class Bala extends DinamicBody {
     public void draw(float dt, Batch batch) {
         //super.draw(batch);
         TextureRegion tg =getFrame(dt);
-        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6,tg.getRegionHeight()/6);
+        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6/ Constant.PPM,tg.getRegionHeight()/6/ Constant.PPM);
     }
 
     @Override
@@ -85,7 +83,7 @@ public class Bala extends DinamicBody {
     @Override
     public void update(float dt) {
 
-        body.setLinearVelocity(new Vector2(velocidad, velocidad)); // Velocity
+        //body.setLinearVelocity(new Vector2(velocidad, velocidad)); // Velocity
 
         switch (direccion) {
             case 0: // DERECHA
@@ -128,15 +126,6 @@ public class Bala extends DinamicBody {
             default:
                 return animacionFrente.getKeyFrame(progresoAnimacion, true);
         }
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive() {
-        this.active=true;
-        shootTime=shootDuration;
     }
 
 }

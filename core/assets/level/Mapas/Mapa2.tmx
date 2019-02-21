@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" nextobjectid="32">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" nextobjectid="33">
  <tileset firstgid="1" source="sin_nombre.tsx"/>
  <tileset firstgid="101" source="b.tsx"/>
  <tileset firstgid="197" source="nose.tsx"/>
@@ -38,7 +38,16 @@
   <object id="29" x="416" y="112" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="generador">
-  <object id="31" x="160" y="112" width="32" height="16"/>
+  <object id="31" x="160" y="112" width="32" height="16">
+   <properties>
+    <property name="tipo" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="32" x="96" y="320" width="16" height="16">
+   <properties>
+    <property name="tipo" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="pinchos">
   <object id="24" x="240" y="80" width="32" height="32"/>
