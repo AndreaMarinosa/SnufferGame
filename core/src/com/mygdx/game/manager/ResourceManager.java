@@ -16,22 +16,22 @@ public class ResourceManager {
 
         // Sounds
         assets.load("core/assets/audio/sounds/sonidoAtaque.ogg", Sound.class);
-
-      //  Gdx.audio.newSound(Gdx.files.internal("core/assets/audio/sounds/sonidoAtaque.ogg")).play(1);
-
-      //  Gdx.audio.newSound(Gdx.files.internal("core/assets/audio/sounds/sonidoAtaque.ogg")).dispose();
+        assets.load("core/assets/audio/sounds/cogerCofre.ogg", Sound.class);
+        assets.load("core/assets/audio/sounds/gameOver.ogg", Sound.class);
+        assets.load("core/assets/audio/sounds/cofre.ogg", Sound.class);
 
                 // Music
-     //   assets.load("audio/music/music.mp3", Music.class);
+        assets.load("core/assets/audio/music/music.mp3", Music.class);
 
         // Texture
-     //   assets.load("texture/gui/life.png", Texture.class);
+        assets.load("core/assets/objetos/cofres/miniChest.png", Texture.class);
 
         // Texture Atlas
         assets.load("core/assets/personajes/personajePrincipal/mainCharacter.pack", TextureAtlas.class);
         assets.load("core/assets/objetos/bala/bala.pack", TextureAtlas.class);
         assets.load("core/assets/personajes/enemigoUno/enemigoUno.pack", TextureAtlas.class);
         assets.load("core/assets/personajes/enemigoDos/enemigoDos.pack", TextureAtlas.class);
+        assets.load("core/assets/personajes/zorro/zorro.pack", TextureAtlas.class);
     }
 
     public static void finishLoading() {

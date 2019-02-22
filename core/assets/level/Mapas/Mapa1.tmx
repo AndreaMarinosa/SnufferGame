@@ -11,10 +11,7 @@
    eJxjYBgcQJUMPS5AHEOkWj8yzB8MwGagHTAKBhQYDbQDRsEoQANDtSwdBcMbjJaVo2AUjIKhBACYgwIC
   </data>
  </layer>
- <objectgroup name="cofres">
-  <object id="9" x="16" y="16" width="16" height="16"/>
-  <object id="10" x="192" y="208" width="16" height="16"/>
-  <object id="11" x="16" y="336" width="16" height="16"/>
+ <objectgroup name="cofre">
   <object id="40" x="512" y="176" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="wall">

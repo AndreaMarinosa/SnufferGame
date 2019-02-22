@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 
 public abstract class Enemy extends DinamicBody {
-    public static float velocidad = 2;
+    public static float velocidad = 1f;
 
     public Enemy(TiledMap map, World world, Rectangle bounds) {
         super(map, world, bounds, null);

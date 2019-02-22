@@ -24,10 +24,9 @@ public class RondaManager {
         // Si el delay de respawn de los enemigos es < o = a 0
         if(delayEnemies<=0){
             // le cambio el valor a 0.05
-            delayEnemies=0.05f;
+            delayEnemies=0.4f;
         }
         aGenerar = enemy+enemy*ronda;
-        // screen, numero de enemigos,
 
         System.out.println("Ronda "+ronda+", "+delayEnemies);
     }

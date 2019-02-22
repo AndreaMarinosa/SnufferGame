@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.Enemy;
@@ -25,15 +27,18 @@ public class Enem1 extends Enemy {
 
     private Enem1.Estados ultimoEstado;
     private Enem1.Estados estadoActual;
+    private float tTime = 0.3f;
+    private float time = 0;
+    private Vector2 direction = new Vector2();
+    private Vector2 randomMovment = new Vector2(0.5f, 1f);
 
 
-    public Enem1(TiledMap map, World world, Rectangle bounds,GameScreen screen) {
+    public Enem1(TiledMap map, World world, Rectangle bounds, GameScreen screen) {
         super(map, world, bounds);
-        this.gameScreen=screen;
         this.gameScreen = screen;
 
         fdef.filter.categoryBits = 8;
-        fdef.filter.maskBits = 1 + 2 + 4+8; // 1 muro, 2 player, 4 bala
+        fdef.filter.maskBits = 1 + 2 + 4 + 8 + 64; // 1 muro, 2 player, 4 bala, 8 enemigo, 64 wolf
         createBody();
 
         animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoUno/enemigoUno.pack").findRegions("frente"));
@@ -48,10 +53,10 @@ public class Enem1 extends Enemy {
 
     @Override
     public void onContact(Contact contact) {
-        if(contact.getFixtureA().getFilterData().categoryBits == 4){
+        if (contact.getFixtureA().getFilterData().categoryBits == 4 || contact.getFixtureA().getFilterData().categoryBits == 64) {
             toDestroy = true;
             gameScreen.levelManager.player.aniquilados++;
-        }else if(contact.getFixtureB().getFilterData().categoryBits == 4){
+        } else if (contact.getFixtureB().getFilterData().categoryBits == 4 || contact.getFixtureB().getFilterData().categoryBits == 64) {
             toDestroy = true;
             gameScreen.levelManager.player.aniquilados++;
         }
@@ -60,7 +65,7 @@ public class Enem1 extends Enemy {
     @Override
     public void draw(float dt, Batch batch) {
         TextureRegion tg = getFrame(dt);
-        batch.draw(tg, body.getPosition().x-4/Constant.PPM, body.getPosition().y-2/Constant.PPM, (tg.getRegionWidth() / 4)/ Constant.PPM, (tg.getRegionHeight() / 4)/ Constant.PPM);
+        batch.draw(tg, body.getPosition().x - 4 / Constant.PPM, body.getPosition().y - 2 / Constant.PPM, (tg.getRegionWidth() / 4) / Constant.PPM, (tg.getRegionHeight() / 4) / Constant.PPM);
     }
 
     @Override
@@ -71,16 +76,67 @@ public class Enem1 extends Enemy {
     @Override
     public void update(float dt) {
 
-        if(body.getPosition().x<gameScreen.levelManager.player.body.getPosition().x){
-            body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
-        }else if(body.getPosition().x>gameScreen.levelManager.player.body.getPosition().x){
-            body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
+
+        if (time <= 0) {
+            time = MathUtils.random(0.3f, 2f);
+
+            if (MathUtils.random(0, 100) < 35 && body.getPosition().dst(gameScreen.levelManager.player.body.getPosition())>2) {
+
+                time = MathUtils.random(1.1f, 2.5f);
+                direction.x = MathUtils.random(-velocidad, velocidad);
+                direction.y = MathUtils.random(-velocidad, velocidad);
+            } else {
+                time = tTime;
+
+                if (body.getPosition().x < gameScreen.levelManager.player.body.getPosition().x) {
+                    //body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
+                    direction.x = velocidad;
+
+
+                }
+
+                if (body.getPosition().x > gameScreen.levelManager.player.body.getPosition().x) {
+                    //body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
+                    direction.x = -velocidad;
+
+                }
+                if (body.getPosition().y < gameScreen.levelManager.player.body.getPosition().y) {
+                    // body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
+
+                    direction.y = velocidad;
+
+                }
+
+                if (body.getPosition().y > gameScreen.levelManager.player.body.getPosition().y) {
+                    //body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
+
+                    direction.y = -velocidad;
+                }
+            }// Hasta a qui el random
+            if (Math.abs(body.getLinearVelocity().y) < Math.abs(body.getLinearVelocity().x)) {
+                if (body.getLinearVelocity().x > 0) {
+                    estadoActual = Estados.DERECHA;
+                } else if (body.getLinearVelocity().x < 0) {
+                    estadoActual = Estados.IZQUIERDA;
+
+                }
+            } else {
+                if (body.getLinearVelocity().y > 0) {
+                    estadoActual = Estados.ESPALDAS;
+                } else if (body.getLinearVelocity().y < 0) {
+                    estadoActual = Estados.FRENTE;
+
+                }
+
+            }
+        } else {
+
+            body.setLinearVelocity(direction);
+
         }
-        if(body.getPosition().y<gameScreen.levelManager.player.body.getPosition().y){
-            body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
-        }else if(body.getPosition().y>gameScreen.levelManager.player.body.getPosition().y){
-            body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
-        }
+        time -= dt;
+
+
     }
 
     @Override

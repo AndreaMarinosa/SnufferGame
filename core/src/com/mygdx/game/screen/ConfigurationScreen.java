@@ -45,24 +45,24 @@ public class ConfigurationScreen implements Screen {
 
                 // subir sonido
                 if (volumenSonido < 1f) {
-                    ConfigurationManager.prefs.putFloat("soundVolume", volumenSonido += 0.1f);
+                    ConfigurationManager.prefs.putFloat("soundVolume", volumenSonido += 0.10f);
                     SoundManager.playBala();
-
+                    System.out.println(ConfigurationManager.prefs.getFloat("soundVolume"));
                 }
             }
         });
 
         // si pulsa el boton que baje el sonido (min 0)
         VisTextButton btSBajarSonido = new VisTextButton("Bajar sonido");
-        btSubirSonido.addListener(new ClickListener() {
+        btSBajarSonido.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
                 // bajar sonido
                 if (volumenSonido > 0f) {
-                    ConfigurationManager.prefs.putFloat("soundVolume", volumenSonido -= 0.1f);
+                    ConfigurationManager.prefs.putFloat("soundVolume", volumenSonido -= 0.10f);
                     SoundManager.playBala();
-
+                    System.out.println(ConfigurationManager.prefs.getFloat("soundVolume"));
                 }
             }
         });

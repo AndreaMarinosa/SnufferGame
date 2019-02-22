@@ -1,5 +1,7 @@
 package com.mygdx.game.manager;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -12,16 +14,19 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.entities.Bala;
 import com.mygdx.game.entities.Enemy;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.Wolf;
 import com.mygdx.game.entities.enemy.Enem1;
 import com.mygdx.game.entities.enemy.Enem2;
+import com.mygdx.game.objetos.Muro;
 import com.mygdx.game.objetos.StaticBody;
+import com.mygdx.game.objetos.cofres.Cofre;
 import com.mygdx.game.objetos.generadores.Enemigo;
 import com.mygdx.game.objetos.generadores.GeneradorEnemigo;
 import com.mygdx.game.objetos.generadores.Enemigo2;
 import com.mygdx.game.objetos.pinchos.Pincho;
+import com.mygdx.game.screen.GameOverScreen;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.util.Constant;
-import com.mygdx.game.util.Funciones;
 
 import static com.mygdx.game.manager.LevelManager.mapas.MAPA1;
 import static com.mygdx.game.manager.LevelManager.mapas.MAPA2;
@@ -29,7 +34,10 @@ import static com.mygdx.game.manager.LevelManager.mapas.MAPA2;
 public class LevelManager {
     public Array<Enemy> enemies;
     public Array<Bala> balas;
-    public static Player player;
+    public Array<Cofre> cofres;
+
+    public Player player;
+    public Wolf wolf;
     public TiledMap map;
     public mapas estadoMapa = MAPA1;
     private GameScreen gameScreen;
@@ -45,6 +53,8 @@ public class LevelManager {
         loadMap();
         player = new Player(map, gameScreen.world,
                 new Rectangle(120 , 120, (32 / 2), (32 / 2) ), gameScreen);
+        wolf = new Wolf(map, gameScreen.world,
+                new Rectangle(120 +10 , 120+10, (32 / 2), (32 / 2) ), gameScreen);
 
     }
 
@@ -52,7 +62,7 @@ public class LevelManager {
 
         balas = new Array<Bala>();
         enemies = new Array<Enemy>();
-
+        cofres = new Array<Cofre>();
 
         map = new TmxMapLoader().load(mapa);
         gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, 1/ Constant.PPM);
@@ -62,7 +72,7 @@ public class LevelManager {
         //GRAOUND
         for (MapObject object : map.getLayers().get("wall").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new StaticBody(rect, gameScreen, (short) 1);
+            new Muro(rect, gameScreen, (short) 1);
         }
         for (MapObject object : map.getLayers().get("generador").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -87,6 +97,14 @@ public class LevelManager {
     }
 
     public void update(float dt) {
+        player.contadorEnemigos = player.aniquilados;
+
+        if (player.vida <= 0) {
+            MusicManager.stopMusica();
+            gameScreen.game.setScreen(new GameOverScreen(gameScreen.game, player.aniquilados));
+            gameScreen.dispose();
+        }
+
         suma = 0;
 
         for (GeneradorEnemigo e : generadores) {
@@ -96,20 +114,24 @@ public class LevelManager {
         }
 
         if(suma ==0){
-            suma =1;
+            suma++;
         }
 
-        if (player.aniquilados >= suma) {
+        System.out.println(">> "+player.contadorEnemigos+", "+ suma);
+        if (player.contadorEnemigos >= suma) {
             for (GeneradorEnemigo e : generadores) {
                 e.generados = 0;
             }
             RondaManager.nextRonda(gameScreen);
-            player.aniquilados = 0;
+            player.contadorEnemigos = 0;
+            for (MapObject object : map.getLayers().get("cofre").getObjects().getByType(RectangleMapObject.class)) {
+
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                cofres.add(new Cofre(rect, gameScreen, new Texture("core/assets/objetos/cofres/miniChest.png")));
+            }
         }
 
-        if (RondaManager.ronda == 1 && estadoMapa == MAPA1) {
-            Enem1.velocidad-=0.5f; // bajamos la velocidad del enemigo
-            Enem2.velocidad-=0.5f;
+        if (RondaManager.ronda == 10 && estadoMapa == MAPA1) {
             estadoMapa = MAPA2;
             gameScreen.game.setScreen(new GameScreen(gameScreen.game, "core/assets/level/Mapas/Mapa2.tmx"));
             gameScreen.dispose();
@@ -117,6 +139,14 @@ public class LevelManager {
 
 
         player.update(dt);
+        wolf.update(dt);
+        for(Cofre c :cofres){
+            if(c.toDestroy){
+                c.destroyBody();
+                cofres.removeValue(c,true);
+            }
+        }
+
         for (Bala bala : balas) {
             if (bala.toDestroy) {
                 bala.destroyBody();
@@ -139,11 +169,16 @@ public class LevelManager {
 
     public void render(float dt, SpriteBatch bach) {
         player.draw(dt, bach);
+        wolf.draw(dt, bach);
         for (Bala bala : balas) {
             bala.draw(dt, bach);
         }
         for (Enemy enemy : enemies) {
             enemy.draw(dt, bach);
+        }
+
+        for (Cofre cofre : cofres) {
+            cofre.draw(dt, bach);
         }
 
     }
@@ -152,13 +187,12 @@ public class LevelManager {
         player.postDraw(dt, bach);
     }
 
-    public static void nuevoJuego() {
+    public void nuevoJuego() {
         RondaManager.ronda = 0;
         RondaManager.enemy = 5;
         RondaManager.delayEnemies = 0;
         RondaManager.aGenerar = 0;
         player.aniquilados = 0;
-
     }
 
     public enum mapas {

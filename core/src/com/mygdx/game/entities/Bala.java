@@ -17,8 +17,6 @@ import com.mygdx.game.util.Constant;
 public class Bala extends DinamicBody {
 
     public boolean active;
-    public float shootTime;
-    public float shootDuration=3;
     public float velocidad= 5f;
 
     private short direccion;
@@ -44,8 +42,6 @@ public class Bala extends DinamicBody {
         animacionEspaldas = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaUp"));
         animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaDech"));
         animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaIzq"));
-
-        setPosition(bounds.x / Constant.PPM, bounds.y / Constant.PPM);
 
         SoundManager.playBala();
     }
@@ -101,10 +97,6 @@ public class Bala extends DinamicBody {
 
         }
 
-        // seccion texturas
-        //setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        //setRegion(getFrame(dt));
-        // END seccion texturas
     }
 
     /**

@@ -33,7 +33,7 @@ public class Enem2 extends Enemy {
         this.gameScreen = screen;
 
         fdef.filter.categoryBits = 8;
-        fdef.filter.maskBits = 1 + 2 + 4 + 8; // 1 muro, 2 player, 4 bala
+        fdef.filter.maskBits = 1 + 2 + 4 + 8 + 64; // 1 muro, 2 player, 4 bala
         createBody();
 
         animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/enemigoDos/enemigoDos.pack").findRegions("frente"));
@@ -49,10 +49,10 @@ public class Enem2 extends Enemy {
 
     @Override
     public void onContact(Contact contact) {
-        if(contact.getFixtureA().getFilterData().categoryBits == 4){
+        if(contact.getFixtureA().getFilterData().categoryBits == 4 ||contact.getFixtureA().getFilterData().categoryBits == 64){
             toDestroy = true;
             gameScreen.levelManager.player.aniquilados++;
-        }else if(contact.getFixtureB().getFilterData().categoryBits == 4){
+        }else if(contact.getFixtureB().getFilterData().categoryBits == 4 || contact.getFixtureB().getFilterData().categoryBits == 64){
             toDestroy = true;
             gameScreen.levelManager.player.aniquilados++;
         }

@@ -45,7 +45,7 @@ public class InputManager  implements InputProcessor {
                 gameScreen.levelManager.player.inputDispararLeft = true;
                 break;
             case Input.Keys.ESCAPE:
-                LevelManager.nuevoJuego();
+                MusicManager.stopMusica();
                 gameScreen.game.setScreen(new MainMenuScreen(gameScreen.game));
                 gameScreen.dispose();
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -11,9 +12,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.manager.ResourceManager;
+import com.mygdx.game.manager.SoundManager;
+import com.mygdx.game.objetos.cofres.Cofre;
+import com.mygdx.game.screen.GameOverScreen;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.util.Constant;
+
+import javax.swing.*;
 
 public class Player extends DinamicBody {
 
@@ -52,7 +60,7 @@ public class Player extends DinamicBody {
     private float progresoAnimacion = 0;
 
     private float vidaBase = 100;
-    private float vida;
+    public float vida;
 
     public Player(TiledMap map, World world, Rectangle bounds, GameScreen gameScreen) {
         super(map, world, bounds, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegion("frente"));
@@ -60,15 +68,13 @@ public class Player extends DinamicBody {
         this.gameScreen = gameScreen;
 
         fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits =  1+8+16;// 1 + 6 (1 = muros, 6 = enemigos)
+        fdef.filter.maskBits =  1+8+16+32+64;// 1 + 6 (1 = muros, 8 = enemigos, 16 = pinchos, 32 = cofres, 64 = wolf)
         createBody();
 
         animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("frente"));
         animacionEspaldas = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("espalda"));
         animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("derecha"));
         animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegions("izquierda"));
-
-        setPosition(bounds.x / 2, bounds.y / 2);
 
         ultimoEstado = Estados.FRENTE;
         estadoActual = Estados.FRENTE;
@@ -89,27 +95,26 @@ public class Player extends DinamicBody {
 
         if (contact.getFixtureB().getFilterData().categoryBits == 16) {
             vida -= 10f;
-            System.out.println("asdfa");
         } else if (contact.getFixtureA().getFilterData().categoryBits == 16) {
             vida -=10f;
-            System.out.println("sasdf");
         }
+        if (contact.getFixtureB().getFilterData().categoryBits == 32) {
+            vida = vidaBase;
+            ((Cofre)contact.getFixtureB().getUserData()).toDestroy=true;
+            SoundManager.playCogerCofre();
 
-        if ((contact.getFixtureA().getFilterData().categoryBits == 32)) {
-            vida += 1f;
-        } else if (contact.getFixtureA().getFilterData().categoryBits == 16) {
-            vida += 1f;
+        } else if (contact.getFixtureA().getFilterData().categoryBits == 32) {
+            vida = vidaBase;
+            ((Cofre)contact.getFixtureA().getUserData()).toDestroy=true;
+            SoundManager.playCogerCofre();
         }
     }
 
     @Override
     public void draw(float dt, Batch batch) {
-        //super.draw(batch);
-
-       // gameScreen.font.draw(batch, ""+aniquilados, body.getPosition().x + 30/ Constant.PPM, body.getPosition().y );
         TextureRegion tg = getFrame(dt);
-        batch.draw(tg, body.getPosition().x, body.getPosition().y, (tg.getRegionWidth() / 6) / Constant.PPM
-                , (tg.getRegionHeight() / 6) / Constant.PPM);
+        batch.draw(tg, body.getPosition().x-4/ Constant.PPM, body.getPosition().y-2/ Constant.PPM, (tg.getRegionWidth() / 4) / Constant.PPM
+                , (tg.getRegionHeight() / 4) / Constant.PPM);
     }
 
     @Override
@@ -134,20 +139,9 @@ public class Player extends DinamicBody {
     @Override
     public void update(float dt) {
         menageInput();
-
-        if (vida <= 0) {
-            System.out.println("muerte");
-        }
-
-        // Controlar balas
         if (fireLast >= 0) {
             fireLast -= dt;
         }
-
-        // seccion texturas
-        //setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        //setRegion(getFrame(dt));
-        // END seccion texturas
     }
 
     /**

@@ -5,17 +5,17 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.game.entities.DinamicBody;
+import com.mygdx.game.objetos.Contacto;
 
 public class ContactManager implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
         if (contact.getFixtureA().getUserData() instanceof DinamicBody){
-            ((DinamicBody)contact.getFixtureA().getUserData()).onContact(contact);
+            ((Contacto)contact.getFixtureA().getUserData()).onContact(contact);
 
         }
         if (contact.getFixtureB().getUserData() instanceof DinamicBody){
-            ((DinamicBody)contact.getFixtureB().getUserData()).onContact(contact);
-
+            ((Contacto)contact.getFixtureB().getUserData()).onContact(contact);
         }
 
     }

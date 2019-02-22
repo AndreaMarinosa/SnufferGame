@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" nextobjectid="33">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="34">
  <tileset firstgid="1" source="sin_nombre.tsx"/>
  <tileset firstgid="101" source="b.tsx"/>
  <tileset firstgid="197" source="nose.tsx"/>
- <layer name="background" width="36" height="24">
+ <layer id="1" name="background" width="36" height="24">
   <data encoding="base64" compression="zlib">
    eJztlskOwiAQhnG91KqXWvXibuJ6cb3oK7Tv/zQOCSQThHaGogfj4QuBbj/z/0AzIUT2w0RAHWgATaCF+uZ4+wt6EqADxEDXaGPU7wH9AN+rFcxf94cERsA4kB94/q7vpcAJOAMX1N6RnmUgPwbEGtjmnyA9PvnR+VwDK+UHVY8rx1qPT37MfNo8Sh16npaxh2oXTL9wbm31yBVF+SnKsszWkemTrovrvbkF6triesXJrVmXMl2cta594uSWCyc7FJ+oOXFxE/TsVPGJei8nOxOCHp+aYDjnRESsT5km13XuvuPrFwW5rjjZofpVRQ/3zJL1mX5QD3cf3ADXD+mR2fH555GezYB5IKQOmZud4GUH12irnt8DhwB9Hx1/3nkB71WlTA==
   </data>
  </layer>
- <layer name="elementos" width="36" height="24">
+ <layer id="2" name="elementos" width="36" height="24">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUgIAmEwSTCmKo6IZoJDa57qEU2NDfylEwCgYEBNDJHlLzMq3dNdjcM9jth4HB4g4QCGAg3j3UrEv8qGDGQNVtQxFQI7xHweAEAMGOBcQ=
   </data>
  </layer>
- <objectgroup name="wall">
+ <objectgroup id="3" name="wall">
   <object id="2" x="336" y="16" width="176" height="16"/>
   <object id="5" x="496" y="32" width="16" height="112"/>
   <object id="6" x="480" y="128" width="16" height="80"/>
@@ -33,11 +33,10 @@
   <object id="21" x="80" y="176" width="16" height="16"/>
   <object id="22" x="112" y="128" width="16" height="16"/>
  </objectgroup>
- <objectgroup name="cofre">
-  <object id="28" x="336" y="32" width="16" height="16"/>
+ <objectgroup id="4" name="cofre">
   <object id="29" x="416" y="112" width="16" height="16"/>
  </objectgroup>
- <objectgroup name="generador">
+ <objectgroup id="5" name="generador">
   <object id="31" x="160" y="112" width="32" height="16">
    <properties>
     <property name="tipo" type="int" value="0"/>
@@ -49,7 +48,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="pinchos">
+ <objectgroup id="6" name="pinchos">
   <object id="24" x="240" y="80" width="32" height="32"/>
   <object id="25" x="96" y="208" width="32" height="32"/>
   <object id="27" x="352" y="272" width="32" height="32"/>

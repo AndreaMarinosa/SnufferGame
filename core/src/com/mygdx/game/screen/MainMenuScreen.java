@@ -11,6 +11,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mygdx.game.SGame;
+import com.mygdx.game.manager.ConfigurationManager;
 import com.mygdx.game.manager.LevelManager;
 
 public class MainMenuScreen implements Screen {

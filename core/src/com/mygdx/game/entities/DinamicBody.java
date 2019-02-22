@@ -7,9 +7,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.game.objetos.Contacto;
 import com.mygdx.game.util.Constant;
 
-public abstract class DinamicBody extends Sprite {
+public abstract class DinamicBody extends Contacto {
 
     protected TiledMap map;
     protected Rectangle bounds;
@@ -47,7 +48,6 @@ public abstract class DinamicBody extends Sprite {
         world.destroyBody(body);
     }
 
-    public abstract void onContact(Contact contact);
     public abstract void draw(float dt, Batch batch);
     public abstract void postDraw(float dt, Batch batch);
     public abstract void update(float dt);

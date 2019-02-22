@@ -1,8 +1,14 @@
 package com.mygdx.game.objetos.cofres;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.mygdx.game.manager.SoundManager;
 import com.mygdx.game.objetos.StaticBody;
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.util.Constant;
 
 /**
  * Created by DAM on 21/02/2019.
@@ -10,8 +16,30 @@ import com.mygdx.game.screen.GameScreen;
 public class Cofre extends StaticBody {
 
     GameScreen screen;
-    public Cofre(Rectangle rect, GameScreen gameScreen, short categoryBits) {
+    Texture tg;
+
+    public Cofre(Rectangle rect, GameScreen gameScreen, Texture texture) {
         super(rect, gameScreen, (short) 32);
         this.screen = gameScreen;
+        this.tg = texture;
+
+        SoundManager.playCofre();
     }
+
+    @Override
+    public void draw(float dt, Batch batch) {
+        batch.draw(tg, body.getPosition().x-6/Constant.PPM, body.getPosition().y-4/Constant.PPM,
+                tg.getWidth()/ Constant.PPM+3, tg.getHeight()/ Constant.PPM+3);
+    }
+
+    public void destroyBody(){
+        screen.world.destroyBody(body);
+    }
+
+    @Override
+    public void onContact(Contact contact) {
+
+    }
+
+
 }

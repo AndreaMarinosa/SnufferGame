@@ -14,6 +14,7 @@ import com.mygdx.game.SGame;
 import com.mygdx.game.manager.CameraManager;
 import com.mygdx.game.manager.InputManager;
 import com.mygdx.game.manager.LevelManager;
+import com.mygdx.game.manager.MusicManager;
 
 public class GameScreen implements Screen {
     private final boolean gameOver;
@@ -40,6 +41,8 @@ public class GameScreen implements Screen {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(inputManager);
         Gdx.input.setInputProcessor(multiplexer);
+
+        MusicManager.playMusica();
     }
 
     @Override
