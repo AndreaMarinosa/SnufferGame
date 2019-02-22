@@ -11,38 +11,36 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.SGame;
-import com.mygdx.game.manager.CameraManager;
-import com.mygdx.game.manager.InputManager;
-import com.mygdx.game.manager.LevelManager;
-import com.mygdx.game.manager.MusicManager;
+import com.mygdx.game.manager.*;
 
 public class GameScreen implements Screen {
-    private final boolean gameOver;
+    public static ShapeRenderer shapeRenderer = new ShapeRenderer();
     public final LevelManager levelManager;
     public final CameraManager cameraManager;
     public final Box2DDebugRenderer b2dr;
-    public BitmapFont font = new BitmapFont();
     public final World world;
+    private final boolean gameOver;
+    public BitmapFont font = new BitmapFont();
     public OrthogonalTiledMapRenderer mapRenderer;
     public SGame game;
     private InputManager inputManager;
     private InputMultiplexer multiplexer;
-    public static ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public GameScreen(SGame game, String mapa) {
         this.game = game;
-        gameOver=false;
+        gameOver = false;
         world = new World(new Vector2(0, 0), true);
         levelManager = new LevelManager(this, mapa);
         cameraManager = new CameraManager(levelManager);
         b2dr = new Box2DDebugRenderer();
-        cameraManager.cam.position.set(cameraManager.port.getWorldWidth() / 2,cameraManager.port.getWorldHeight() / 2, 0);
-        inputManager =new InputManager(this);
+        cameraManager.cam.position.set(cameraManager.port.getWorldWidth() / 2, cameraManager.port.getWorldHeight() / 2, 0);
+        inputManager = new InputManager(this);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(inputManager);
         Gdx.input.setInputProcessor(multiplexer);
 
-        MusicManager.playMusica();
+        if (ConfigurationManager.isMusicEnabled())
+            MusicManager.playMusica();
     }
 
     @Override
@@ -67,11 +65,11 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(cameraManager.cam.combined);
         game.batch.begin();
 
-        levelManager.render(delta,game.batch);
+        levelManager.render(delta, game.batch);
 
         game.batch.end();
-        levelManager.postRender(delta,game.batch);
-        b2dr.render(world,cameraManager.cam.combined);
+        levelManager.postRender(delta, game.batch);
+        b2dr.render(world, cameraManager.cam.combined);
     }
 
     @Override

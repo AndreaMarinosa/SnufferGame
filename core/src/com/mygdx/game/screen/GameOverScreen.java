@@ -16,6 +16,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mygdx.game.SGame;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.manager.ConfigurationManager;
 import com.mygdx.game.manager.RondaManager;
 import com.mygdx.game.manager.SoundManager;
 
@@ -34,7 +35,6 @@ public class GameOverScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage();
-
         SoundManager.playGameOver();
 
         VisLabel gameOver = new VisLabel("Game Over.");

@@ -7,7 +7,6 @@ import com.mygdx.game.screen.GameScreen;
 /**
  * Clase que se encarga de las rondas por mapa
  *
- *  5 rondas por cada mapa
  */
 public class RondaManager {
 
@@ -24,11 +23,10 @@ public class RondaManager {
         // Si el delay de respawn de los enemigos es < o = a 0
         if(delayEnemies<=0){
             // le cambio el valor a 0.05
-            delayEnemies=0.4f;
+            delayEnemies=0.05f;
         }
         aGenerar = enemy+enemy*ronda;
 
-        System.out.println("Ronda "+ronda+", "+delayEnemies);
     }
 
 }

@@ -14,8 +14,5 @@ public abstract class Enemy extends DinamicBody {
         super(map, world, bounds, null);
     }
 
-    public abstract void onHitPlayer();
-
-    public abstract void onHitWall();
 
 }

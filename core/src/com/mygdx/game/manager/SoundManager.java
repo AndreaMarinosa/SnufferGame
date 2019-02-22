@@ -9,27 +9,23 @@ public class SoundManager {
     private static Sound soundCogerCofre = ResourceManager.getSound("core/assets/audio/sounds/cogerCofre.ogg");
     private static Sound soundGameOver = ResourceManager.getSound("core/assets/audio/sounds/gameOver.ogg");
 
-    public static void playBala(){
-        if(ConfigurationManager.isSoundEnabled()) {
-            soundBala.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
-        }
+    public static void playBala() {
+        soundBala.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
+
     }
 
-    public static void playCofre(){
-        if(ConfigurationManager.isSoundEnabled()) {
-            soundCofre.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
-        }
+    public static void playCofre() {
+        soundCofre.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
+
     }
 
-    public static void playCogerCofre(){
-        if(ConfigurationManager.isSoundEnabled()) {
-            soundCogerCofre.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
-        }
+    public static void playCogerCofre() {
+        soundCogerCofre.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
+
     }
 
-    public static void playGameOver(){
-        if(ConfigurationManager.isSoundEnabled()) {
-            soundGameOver.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
-        }
+    public static void playGameOver() {
+        soundGameOver.play(ConfigurationManager.prefs.getFloat("soundVolume", 0.3f));
+
     }
 }

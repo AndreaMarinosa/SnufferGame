@@ -7,28 +7,29 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.util.dialog.ConfirmDialogListener;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mygdx.game.SGame;
-import com.mygdx.game.manager.ConfigurationManager;
-import com.mygdx.game.manager.LevelManager;
 
 public class MainMenuScreen implements Screen {
     SGame game;
     // private static MainMenuScreen ourInstance = new MainMenuScreen(game);
-   // public static MainMenuScreen getInstance() {
-   //     return ourInstance;
-   // }
+    // public static MainMenuScreen getInstance() {
+    //     return ourInstance;
+    // }
 
     Stage stage;
+
     public MainMenuScreen(SGame game) {
         this.game = game;
     }
 
     @Override
     public void show() {
-        if (!VisUI.isLoaded()){
+        if (!VisUI.isLoaded()) {
             VisUI.load();
         }
 
@@ -43,8 +44,25 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa1.tmx"));
-                dispose();
+                final int mapaUno = 1;
+                final int mapaDos = 2;
+
+                Dialogs.showConfirmDialog(stage, "Mapas", "Elije un mapa.",
+                        new String[]{"MAPA 1", "MAPA 2"}, new Integer[]{mapaUno, mapaDos},
+                        new ConfirmDialogListener<Integer>() {
+                            @Override
+                            public void result(Integer result) {
+                                if (result == mapaUno) {
+                                    game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa1.tmx"));
+                                    dispose();
+                                }
+                                if (result == mapaDos) {
+                                    game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa2.tmx"));
+                                    dispose();
+                                }
+
+                            }
+                        });
             }
         });
 

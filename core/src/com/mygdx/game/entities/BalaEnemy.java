@@ -10,18 +10,19 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.game.manager.ConfigurationManager;
+import com.mygdx.game.entities.enemy.Enem1;
 import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.manager.SoundManager;
+import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.util.Constant;
 
-public class Bala extends DinamicBody {
+public class BalaEnemy extends DinamicBody {
 
     public boolean active;
-    public float velocidad= 5f;
-    public static int danio = 50;
+    public float velocidad= 2f;
+    public GameScreen gameScreen;
 
-    private short direccion;
+    private Vector2 direccion;
 
     // Animaciones
     private Animation<TextureRegion> animacionFrente;
@@ -31,13 +32,17 @@ public class Bala extends DinamicBody {
 
     private float progresoAnimacion = 0;
 
-    public Bala(TiledMap map, World world, Rectangle bounds, short direccion) {
+    private Estados ultimoEstado;
+    private Estados estadoActual;
+
+    public BalaEnemy(TiledMap map, World world, Rectangle bounds, Vector2 direccion, GameScreen gameScreen) {
         super(map, world, bounds, null);
 
+        this.gameScreen = gameScreen;
         active = false;
         this.direccion = direccion;
-        fdef.filter.categoryBits = 4;
-        fdef.filter.maskBits = 1 + 8; // 1 muros, 8 enemigos
+        fdef.filter.categoryBits = 128;
+        fdef.filter.maskBits = 1 + 2; // 1 muros, 2 main character
         createBody();
 
         animacionFrente = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaBaj"));
@@ -45,14 +50,15 @@ public class Bala extends DinamicBody {
         animacionDerecha = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaDech"));
         animacionIzquierda = new Animation<TextureRegion>(1 / 4f, ResourceManager.getAtlas("core/assets/objetos/bala/bala.pack").findRegions("balaIzq"));
 
-        SoundManager.playBala();
+        ultimoEstado = Estados.FRENTE;
+        estadoActual = Estados.FRENTE;
     }
 
     @Override
     public void onContact(Contact contact) {
-        if(contact.getFixtureA().getFilterData().categoryBits==1 || contact.getFixtureA().getFilterData().categoryBits==8){
+        if(contact.getFixtureA().getFilterData().categoryBits==1 || contact.getFixtureA().getFilterData().categoryBits==2){
             toDestroy=true;
-        }else if(contact.getFixtureB().getFilterData().categoryBits==1 || contact.getFixtureB().getFilterData().categoryBits==8){
+        }else if(contact.getFixtureB().getFilterData().categoryBits==1 || contact.getFixtureB().getFilterData().categoryBits==2){
             toDestroy=true;
         }
     }
@@ -82,7 +88,39 @@ public class Bala extends DinamicBody {
     public void update(float dt) {
 
         //body.setLinearVelocity(new Vector2(velocidad, velocidad)); // Velocity
+       // body.setLinearVelocity(direccion.x, direccion.y);
 
+        if (body.getPosition().x < gameScreen.levelManager.player.body.getPosition().x) {
+         //   body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
+            body.setLinearVelocity(direccion.x, direccion.y);
+        } else if (body.getPosition().x > gameScreen.levelManager.player.body.getPosition().x) {
+           // body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
+            body.setLinearVelocity(-direccion.x, direccion.y);
+        }
+        if (body.getPosition().y < gameScreen.levelManager.player.body.getPosition().y) {
+           // body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
+            body.setLinearVelocity(direccion.x, direccion.y);
+        } else if (body.getPosition().y > gameScreen.levelManager.player.body.getPosition().y) {
+         //   body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
+            body.setLinearVelocity(direccion.x, -direccion.y);
+        }
+
+        if (Math.abs(body.getLinearVelocity().y) < Math.abs(body.getLinearVelocity().x)) {
+            if (body.getLinearVelocity().x > 0) {
+                estadoActual = Estados.DERECHA;
+            } else if (body.getLinearVelocity().x < 0) {
+                estadoActual = Estados.IZQUIERDA;
+
+            }
+        } else {
+            if (body.getLinearVelocity().y > 0) {
+                estadoActual = Estados.ESPALDAS;
+            } else if (body.getLinearVelocity().y < 0) {
+                estadoActual = Estados.FRENTE;
+
+            }
+
+        }/*
         switch (direccion) {
             case 0: // DERECHA
                 body.setLinearVelocity(new Vector2(velocidad, 0));
@@ -97,7 +135,7 @@ public class Bala extends DinamicBody {
                 body.setLinearVelocity(new Vector2(0, -velocidad));
                 break;
 
-        }
+        }*/
 
     }
 
@@ -108,18 +146,23 @@ public class Bala extends DinamicBody {
      */
     public TextureRegion getFrame(float dt) {
 
-        switch (direccion) {
-            case 3:
+        progresoAnimacion = estadoActual == ultimoEstado ? progresoAnimacion + dt : 0;
+        ultimoEstado = estadoActual;
+        switch (estadoActual) {
+            case FRENTE:
                 return animacionFrente.getKeyFrame(progresoAnimacion, true);
-            case 0:
+            case DERECHA:
                 return animacionDerecha.getKeyFrame(progresoAnimacion, true);
-            case 2:
+            case ESPALDAS:
                 return animacionEspaldas.getKeyFrame(progresoAnimacion, true);
-            case 1:
+            case IZQUIERDA:
                 return animacionIzquierda.getKeyFrame(progresoAnimacion, true);
             default:
                 return animacionFrente.getKeyFrame(progresoAnimacion, true);
         }
     }
-
+    //Estados
+    private enum Estados {
+        FRENTE, ESPALDAS, IZQUIERDA, DERECHA
+    }
 }

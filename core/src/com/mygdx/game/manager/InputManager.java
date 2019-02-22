@@ -9,12 +9,15 @@ import com.mygdx.game.screen.MainMenuScreen;
 public class InputManager  implements InputProcessor {
     private GameScreen gameScreen;
     public boolean active;
-
+    float sonido;
+    float musica;
 
     public InputManager(GameScreen gameScreen) {
         super();
         this.gameScreen = gameScreen;
         active=true;
+        sonido = ConfigurationManager.prefs.getFloat("soundVolume");
+        musica = ConfigurationManager.prefs.getFloat("musicVolume");
     }
 
     @Override
@@ -48,7 +51,21 @@ public class InputManager  implements InputProcessor {
                 MusicManager.stopMusica();
                 gameScreen.game.setScreen(new MainMenuScreen(gameScreen.game));
                 gameScreen.dispose();
-
+                break;
+            case Input.Keys.Z: // bajar sonido
+                if (ConfigurationManager.prefs.getFloat("soundVolume") > 0f)
+                ConfigurationManager.setSound(sonido-=0.1000f);
+                break;
+            case Input.Keys.X: // subir sonido
+                if (ConfigurationManager.prefs.getFloat("soundVolume") < 1.00f)
+                ConfigurationManager.setSound(sonido+=0.1000f);
+                break;
+            case Input.Keys.C: // bajar musica
+                MusicManager.stopMusica();
+                break;
+            case Input.Keys.V: // subir musica
+                MusicManager.playMusica();
+                break;
         }
         return true;
     }

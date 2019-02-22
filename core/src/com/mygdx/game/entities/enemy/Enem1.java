@@ -32,6 +32,7 @@ public class Enem1 extends Enemy {
     private Vector2 direction = new Vector2();
     private Vector2 randomMovment = new Vector2(0.5f, 1f);
 
+    private int vida;
 
     public Enem1(TiledMap map, World world, Rectangle bounds, GameScreen screen) {
         super(map, world, bounds);
@@ -49,16 +50,25 @@ public class Enem1 extends Enemy {
         ultimoEstado = Estados.FRENTE;
         estadoActual = Estados.FRENTE;
 
+        vida = 1;
     }
 
     @Override
     public void onContact(Contact contact) {
         if (contact.getFixtureA().getFilterData().categoryBits == 4 || contact.getFixtureA().getFilterData().categoryBits == 64) {
-            toDestroy = true;
-            gameScreen.levelManager.player.aniquilados++;
+            vida--;
+            if (vida <= 0){
+                toDestroy = true;
+                gameScreen.levelManager.player.aniquilados++;
+                gameScreen.levelManager.player.contadorEnemigos++;
+            }
         } else if (contact.getFixtureB().getFilterData().categoryBits == 4 || contact.getFixtureB().getFilterData().categoryBits == 64) {
-            toDestroy = true;
-            gameScreen.levelManager.player.aniquilados++;
+            vida--;
+            if (vida <= 0){
+                toDestroy = true;
+                gameScreen.levelManager.player.aniquilados++;
+                gameScreen.levelManager.player.contadorEnemigos++;
+            }
         }
     }
 
@@ -91,8 +101,6 @@ public class Enem1 extends Enemy {
                 if (body.getPosition().x < gameScreen.levelManager.player.body.getPosition().x) {
                     //body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
                     direction.x = velocidad;
-
-
                 }
 
                 if (body.getPosition().x > gameScreen.levelManager.player.body.getPosition().x) {
@@ -130,23 +138,9 @@ public class Enem1 extends Enemy {
 
             }
         } else {
-
             body.setLinearVelocity(direction);
-
         }
         time -= dt;
-
-
-    }
-
-    @Override
-    public void onHitPlayer() {
-
-    }
-
-    @Override
-    public void onHitWall() {
-
     }
 
     /**

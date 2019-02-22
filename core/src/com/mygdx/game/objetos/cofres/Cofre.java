@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.mygdx.game.manager.ConfigurationManager;
 import com.mygdx.game.manager.SoundManager;
 import com.mygdx.game.objetos.StaticBody;
 import com.mygdx.game.screen.GameScreen;
@@ -29,7 +30,7 @@ public class Cofre extends StaticBody {
     @Override
     public void draw(float dt, Batch batch) {
         batch.draw(tg, body.getPosition().x-6/Constant.PPM, body.getPosition().y-4/Constant.PPM,
-                tg.getWidth()/ Constant.PPM+3, tg.getHeight()/ Constant.PPM+3);
+                tg.getWidth()/ Constant.PPM, tg.getHeight()/ Constant.PPM);
     }
 
     public void destroyBody(){

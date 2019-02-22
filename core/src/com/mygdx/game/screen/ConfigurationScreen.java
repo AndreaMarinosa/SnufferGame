@@ -12,6 +12,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mygdx.game.SGame;
 import com.mygdx.game.manager.ConfigurationManager;
+import com.mygdx.game.manager.MusicManager;
 import com.mygdx.game.manager.SoundManager;
 
 public class ConfigurationScreen implements Screen {
@@ -60,37 +61,27 @@ public class ConfigurationScreen implements Screen {
 
                 // bajar sonido
                 if (volumenSonido > 0f) {
-                    ConfigurationManager.prefs.putFloat("soundVolume", volumenSonido -= 0.10f);
+                    ConfigurationManager.setSound(volumenSonido -= 0.10f);
                     SoundManager.playBala();
-                    System.out.println(ConfigurationManager.prefs.getFloat("soundVolume"));
                 }
             }
         });
 
-        VisTextButton subirMusica = new VisTextButton("Subir musica");
+        VisTextButton subirMusica = new VisTextButton("Activar musica");
         subirMusica.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // subir sonido
-                if (volumenMusica < 1f) {
-                    ConfigurationManager.prefs.putFloat("soundMusic", volumenSonido += 0.1f);
-                    SoundManager.playBala();
+                ConfigurationManager.setMusicEnabled(true);
 
-                }
             }
 
         });
 
-        VisTextButton bajarMusica = new VisTextButton("Bajar musica");
+        VisTextButton bajarMusica = new VisTextButton("Desactivar musica");
         bajarMusica.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // bajar sonido
-                if (volumenSonido > 0f) {
-                    ConfigurationManager.prefs.putFloat("soundMusic", volumenSonido -= 0.1f);
-                    SoundManager.playBala();
-
-                }
+                ConfigurationManager.setMusicEnabled(false);
             }
         });
 
