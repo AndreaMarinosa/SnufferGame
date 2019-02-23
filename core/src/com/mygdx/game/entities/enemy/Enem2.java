@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.entities.BalaEnemy;
@@ -26,8 +28,12 @@ public class Enem2 extends Enemy {
 
     private Enem2.Estados ultimoEstado;
     private Enem2.Estados estadoActual;
+    private float tTime = 0.3f;
+    private float time = 0;
+    private Vector2 direction = new Vector2();
+    private Vector2 randomMovment = new Vector2(0.5f, 1f);
 
-    private float fireRate = 6f;
+    private float fireRate = 0.5f;
     private float fireLast = 0;
     private int vida;
 
@@ -64,7 +70,7 @@ public class Enem2 extends Enemy {
                 gameScreen.levelManager.player.contadorEnemigos++;
             }
         } else if (contact.getFixtureB().getFilterData().categoryBits == 4 || contact.getFixtureB().getFilterData().categoryBits == 64) {
-            vida --;
+            vida--;
             if (vida <= 0) {
                 toDestroy = true;
                 gameScreen.levelManager.player.aniquilados++;
@@ -92,7 +98,71 @@ public class Enem2 extends Enemy {
 
         float distancia = gameScreen.levelManager.player.body.getPosition().dst(body.getPosition());
 
-        if (distancia > 80 / Constant.PPM) {
+        if (time <= 0) {
+            time = MathUtils.random(0.3f, 2f);
+
+            if (MathUtils.random(0, 100) < 10 && body.getPosition().dst(gameScreen.levelManager.player.body.getPosition()) > 2) {
+
+                time = MathUtils.random(1.1f, 2.5f);
+                direction.x = MathUtils.random(-velocidad, velocidad);
+                direction.y = MathUtils.random(-velocidad, velocidad);
+            } else {
+                time = tTime;
+
+                if (body.getPosition().x < gameScreen.levelManager.player.body.getPosition().x) {
+                    //body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
+                    direction.x = velocidad;
+                }
+
+                if (body.getPosition().x > gameScreen.levelManager.player.body.getPosition().x) {
+                    //body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
+                    direction.x = -velocidad;
+
+                }
+                if (body.getPosition().y < gameScreen.levelManager.player.body.getPosition().y) {
+                    // body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
+                    direction.y = velocidad;
+
+                }
+
+                if (body.getPosition().y > gameScreen.levelManager.player.body.getPosition().y) {
+                    //body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
+                    direction.y = -velocidad;
+                }
+            }// Hasta a qui el random
+            if (distancia > 80 / Constant.PPM) {
+                if (Math.abs(body.getLinearVelocity().y) < Math.abs(body.getLinearVelocity().x)) {
+                    if (body.getLinearVelocity().x > 0) {
+                        estadoActual = Estados.DERECHA;
+                    } else if (body.getLinearVelocity().x < 0) {
+                        estadoActual = Estados.IZQUIERDA;
+
+                    }
+                } else {
+                    if (body.getLinearVelocity().y > 0) {
+                        estadoActual = Estados.ESPALDAS;
+                    } else if (body.getLinearVelocity().y < 0) {
+                        estadoActual = Estados.FRENTE;
+
+                    }
+                }
+            } else {
+                if (fireLast <= 0) {
+                    gameScreen.levelManager.balasEnemigos.add(new BalaEnemy(map, world,
+                            new Rectangle(body.getPosition().x * Constant.PPM, body.getPosition().y * Constant.PPM,
+                                    10, 10), gameScreen));
+
+                    fireLast = fireRate;
+                }
+            }
+        } else {
+            body.setLinearVelocity(direction);
+        }
+        time -= dt;
+
+
+
+     /*   if (distancia > 80 / Constant.PPM) {
             if (body.getPosition().x < gameScreen.levelManager.player.body.getPosition().x) {
                 body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
 
@@ -104,14 +174,7 @@ public class Enem2 extends Enemy {
             } else if (body.getPosition().y > gameScreen.levelManager.player.body.getPosition().y) {
                 body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
             }
-        } else {
-            if (fireLast <= 0) {
-                gameScreen.levelManager.balasEnemigos.add(new BalaEnemy(map, world,
-                        new Rectangle(body.getPosition().x * Constant.PPM, body.getPosition().y * Constant.PPM,
-                                10, 10), gameScreen.levelManager.player.body.getPosition(), gameScreen));
-                fireLast = fireRate;
-            }
-        }
+        } */
     }
 
     /**

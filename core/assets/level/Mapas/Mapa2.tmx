@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="34">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="38">
  <tileset firstgid="1" source="sin_nombre.tsx"/>
  <tileset firstgid="101" source="b.tsx"/>
  <tileset firstgid="197" source="nose.tsx"/>
@@ -10,7 +10,7 @@
  </layer>
  <layer id="2" name="elementos" width="36" height="24">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUgIAmEwSTCmKo6IZoJDa57qEU2NDfylEwCgYEBNDJHlLzMq3dNdjcM9jth4HB4g4QCGAg3j3UrEv8qGDGQNVtQxFQI7xHweAEAMGOBcQ=
+   eJxjYBgFo2AU9DEhMKkghoruiEZiazJBML2BDQ7xgXLPKBgFtAIBdLJnAxMEEwto7a4NTKTlZ3qEEz730CueCIHB4g4QCGAg3j3ULLv9qGDGaF1CPKBGeI+CwQkA8e0Jig==
   </data>
  </layer>
  <objectgroup id="3" name="wall">
@@ -49,8 +49,8 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="pinchos">
-  <object id="24" x="240" y="80" width="32" height="32"/>
-  <object id="25" x="96" y="208" width="32" height="32"/>
+  <object id="24" x="240" y="96" width="32" height="32"/>
+  <object id="25" x="112" y="224" width="32" height="32"/>
   <object id="27" x="352" y="272" width="32" height="32"/>
  </objectgroup>
 </map>

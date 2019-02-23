@@ -1,22 +1,18 @@
 package com.mygdx.game.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.util.dialog.ConfirmDialogListener;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mygdx.game.SGame;
-import com.mygdx.game.entities.Player;
-import com.mygdx.game.manager.ConfigurationManager;
 import com.mygdx.game.manager.RondaManager;
 import com.mygdx.game.manager.SoundManager;
 
@@ -26,10 +22,10 @@ public class GameOverScreen implements Screen {
     private SGame game;
     private int enemigos;
 
+
     public GameOverScreen(SGame game, int enemigos) {
         this.game = game;
         this.enemigos = enemigos;
-
     }
 
     @Override
@@ -41,13 +37,21 @@ public class GameOverScreen implements Screen {
         gameOver.setColor(Color.BLACK);
         stage.addActor(gameOver);
 
-        VisLabel scoreEnemigos = new VisLabel("Enemigos muertos: "+enemigos);
+        VisLabel scoreEnemigos = new VisLabel("Enemigos muertos: " + enemigos);
         stage.addActor(scoreEnemigos);
         scoreEnemigos.setColor(Color.BLACK);
 
-        VisLabel scoreRondas = new VisLabel("Rondas pasadas: "+ RondaManager.ronda);
+     /*   VisLabel scoreMayorEnemigos = new VisLabel("Max. Score enemigos: " + enemigosP);
+        stage.addActor(scoreMayorEnemigos);
+        scoreMayorEnemigos.setColor(Color.BLACK);*/
+
+        VisLabel scoreRondas = new VisLabel("Rondas pasadas: " + RondaManager.ronda);
         stage.addActor(scoreRondas);
         scoreRondas.setColor(Color.BLACK);
+
+     /*   VisLabel scoreMayorRondas= new VisLabel("Max. Score rondas: " + rondasP);
+        stage.addActor(scoreMayorRondas);
+        scoreMayorRondas.setColor(Color.BLACK);*/
 
         VisTable table = new VisTable();
         table.setFillParent(true);
@@ -66,8 +70,25 @@ public class GameOverScreen implements Screen {
         btTryAgain.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa1.tmx"));
-                dispose();
+                final int mapaUno = 1;
+                final int mapaDos = 2;
+
+                Dialogs.showConfirmDialog(stage, "Mapas", "Elije un mapa.",
+                        new String[]{"MAPA 1", "MAPA 2"}, new Integer[]{mapaUno, mapaDos},
+                        new ConfirmDialogListener<Integer>() {
+                            @Override
+                            public void result(Integer result) {
+                                if (result == mapaUno) {
+                                    game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa1.tmx"));
+                                    dispose();
+                                }
+                                if (result == mapaDos) {
+                                    game.setScreen(new GameScreen(game, "core/assets/level/Mapas/Mapa2.tmx"));
+                                    dispose();
+                                }
+
+                            }
+                        });
             }
         });
 
@@ -76,8 +97,12 @@ public class GameOverScreen implements Screen {
         table.add(gameOver).left().width(200).height(20).pad(5).colspan(2);
         table.row();
         table.add(scoreEnemigos).left().width(200).height(20).pad(5).colspan(2);
+       /* table.row();
+        table.add(scoreMayorEnemigos).left().width(200).height(20).pad(5).colspan(2);*/
         table.row();
         table.add(scoreRondas).left().width(200).height(20).pad(5).colspan(2);
+       /* table.row();
+        table.add(scoreMayorRondas).left().width(200).height(20).pad(5).colspan(2);*/
         table.row();
         table.add(btMenu).center().width(200).height(50).pad(5);
         table.row();

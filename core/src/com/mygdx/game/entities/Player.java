@@ -32,7 +32,7 @@ public class Player extends DinamicBody {
     public float velocidad = 2f;
     public float vida;
     private GameScreen gameScreen;
-    private float fireRate = 0.2f;
+    public float fireRate = 0.2f;
     private float fireLast = 0;
 
     private Estados ultimoEstado;
@@ -84,10 +84,8 @@ public class Player extends DinamicBody {
         }
 
         if (contact.getFixtureB().getFilterData().categoryBits == 128) {
-            System.out.println("me quita vida, "+ vida);
             vida -= 3f;
         } else if (contact.getFixtureA().getFilterData().categoryBits == 128) {
-            System.out.println("me quita vida, "+ vida);
             vida -= 3f;
         }
 

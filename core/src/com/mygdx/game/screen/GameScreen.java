@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.SGame;
 import com.mygdx.game.manager.*;
 
+import java.util.logging.Level;
+
 public class GameScreen implements Screen {
     public static ShapeRenderer shapeRenderer = new ShapeRenderer();
     public final LevelManager levelManager;
@@ -38,6 +40,7 @@ public class GameScreen implements Screen {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(inputManager);
         Gdx.input.setInputProcessor(multiplexer);
+
 
         if (ConfigurationManager.isMusicEnabled())
             MusicManager.playMusica();
@@ -70,6 +73,7 @@ public class GameScreen implements Screen {
         game.batch.end();
         levelManager.postRender(delta, game.batch);
         b2dr.render(world, cameraManager.cam.combined);
+
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.mygdx.game.manager;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -12,14 +11,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.entities.*;
-import com.mygdx.game.entities.enemy.Enem1;
-import com.mygdx.game.entities.enemy.Enem2;
 import com.mygdx.game.objetos.Muro;
-import com.mygdx.game.objetos.StaticBody;
 import com.mygdx.game.objetos.cofres.Cofre;
 import com.mygdx.game.objetos.generadores.Enemigo;
-import com.mygdx.game.objetos.generadores.GeneradorEnemigo;
 import com.mygdx.game.objetos.generadores.Enemigo2;
+import com.mygdx.game.objetos.generadores.GeneradorEnemigo;
 import com.mygdx.game.objetos.pinchos.Pincho;
 import com.mygdx.game.screen.GameOverScreen;
 import com.mygdx.game.screen.GameScreen;
@@ -34,22 +30,28 @@ public class LevelManager {
     public Player player;
     public Wolf wolf;
     public TiledMap map;
-    private GameScreen gameScreen;
-    String mapa;
     public Array<GeneradorEnemigo> generadores;
-    private int suma=0;
+    String mapa;
+    private GameScreen gameScreen;
+    private int suma = 0;
 
     public LevelManager(GameScreen gameScreen, String mapa) {
         this.mapa = mapa;
         this.gameScreen = gameScreen;
-        RondaManager.nextRonda(gameScreen);
         generadores = new Array<GeneradorEnemigo>();
-        loadMap();
+
         player = new Player(map, gameScreen.world,
-                new Rectangle(120 , 120, (32 / 2), (32 / 2) ), gameScreen);
+                new Rectangle(120, 120, (32 / 2), (32 / 2)), gameScreen);
         wolf = new Wolf(map, gameScreen.world,
-                new Rectangle(120 +10 , 120+10, (32 / 2), (32 / 2) ), gameScreen);
-        //nuevoJuego();
+                new Rectangle(120 + 10, 120 + 10, (32 / 2), (32 / 2)), gameScreen);
+
+        if (RondaManager.ronda > 0) {
+            nuevoJuego();
+            RondaManager.nextRonda(gameScreen);
+        } else
+            RondaManager.nextRonda(gameScreen);
+
+        loadMap();
     }
 
     private void loadMap() {
@@ -60,7 +62,7 @@ public class LevelManager {
         cofres = new Array<Cofre>();
 
         map = new TmxMapLoader().load(mapa);
-        gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, 1/ Constant.PPM);
+        gameScreen.mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Constant.PPM);
         gameScreen.world.setContactListener(new ContactManager());
 
 
@@ -72,10 +74,10 @@ public class LevelManager {
         for (MapObject object : map.getLayers().get("generador").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             System.out.println(rect.x + ", " + rect.y);
-            if ( object.getProperties().get("tipo",Integer.class) == 1) {
-               generadores.add(new Enemigo2(gameScreen, new Vector2(rect.x , rect.y )));
+            if (object.getProperties().get("tipo", Integer.class) == 1) {
+                generadores.add(new Enemigo2(gameScreen, new Vector2(rect.x, rect.y)));
             } else {
-               generadores.add(new Enemigo(gameScreen, new Vector2(rect.x , rect.y )));
+                generadores.add(new Enemigo(gameScreen, new Vector2(rect.x, rect.y)));
             }
 
         }
@@ -85,7 +87,7 @@ public class LevelManager {
                 new Pincho(gameScreen, rect);
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -103,11 +105,11 @@ public class LevelManager {
 
         for (GeneradorEnemigo e : generadores) {
             e.update(dt);
-            suma =suma+ e.generados;
+            suma = suma + e.generados;
 
         }
 
-        if(suma ==0){
+        if (suma == 0) {
             suma++;
         }
 
@@ -126,10 +128,10 @@ public class LevelManager {
 
         player.update(dt);
         wolf.update(dt);
-        for(Cofre c :cofres){
-            if(c.toDestroy){
+        for (Cofre c : cofres) {
+            if (c.toDestroy) {
                 c.destroyBody();
-                cofres.removeValue(c,true);
+                cofres.removeValue(c, true);
             }
         }
 
@@ -165,10 +167,11 @@ public class LevelManager {
     public void render(float dt, SpriteBatch bach) {
         player.draw(dt, bach);
         wolf.draw(dt, bach);
+
         for (Bala bala : balas) {
             bala.draw(dt, bach);
         }
-        for (BalaEnemy balaEnemy: balasEnemigos){
+        for (BalaEnemy balaEnemy : balasEnemigos) {
             balaEnemy.draw(dt, bach);
         }
         for (Enemy enemy : enemies) {
@@ -186,9 +189,8 @@ public class LevelManager {
     }
 
     public void nuevoJuego() {
-        RondaManager.ronda = 1;
-        RondaManager.delayEnemies = 0;
-        RondaManager.aGenerar = 0;
+        RondaManager.ronda = 0;
         player.aniquilados = 0;
+        player.fireRate = 0.2f;
     }
 }

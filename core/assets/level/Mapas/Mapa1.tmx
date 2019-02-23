@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" nextobjectid="55">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="36" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="55">
  <tileset firstgid="1" source="sin_nombre.tsx"/>
- <layer name="background" width="36" height="24">
+ <layer id="1" name="background" width="36" height="24">
   <data encoding="base64" compression="zlib">
    eJztls0OwiAQhKlWL164mJiejOnFn3qpGt+i7/82LpFNJoTCglZ68PClPzsgDtNtK6XUglgGWBFrYiAq0Ne2xtfufT7nY0xvfmND7ATg+iT6HLT9v1PNn0qT4M8vaAP+9MRTMIdUJ9HrgD/SrKRmKqRvAv6U2q855Yefrz1xsGDdd29KzH4diZPl4dR7qN2Jmz1+U4+6q/WnBlBfO3AWsc9+oue68WWwzCE//C4ybGewHp3hT2rfSxmD+yX1J+ddKh3TZvjzz085cvIzJZgf7s9n4qLGe+5Y3SWmd+udevdlXo/vexjH+76VQ+uJ6bmOGUZK5QczjJTKD2YYcfPTea4l57E5QplBXtbBWaA=
   </data>
  </layer>
- <layer name="elementos" width="36" height="24">
+ <layer id="2" name="elementos" width="36" height="24">
   <data encoding="base64" compression="zlib">
-   eJxjYBgcQJUMPS5AHEOkWj8yzB8MwGagHTAKBhQYDbQDRsEoQANDtSwdBcMbjJaVo2AUjIKhBACYgwIC
+   eJxjYBh44APEqmTocwHiGCLV+pFh/mAANgPtgFEwoMBooB0wCgY9iCZSDJccPrXYwFAtS0fB8AajZeUoGAjgSIQaUstYUtWPgqEJAEHyBLE=
   </data>
  </layer>
- <objectgroup name="cofre">
+ <objectgroup id="3" name="cofre">
   <object id="40" x="512" y="176" width="16" height="16"/>
  </objectgroup>
- <objectgroup name="wall">
+ <objectgroup id="4" name="wall">
   <object id="13" x="0" y="0" width="576" height="16"/>
   <object id="17" x="160" y="16" width="48" height="16"/>
   <object id="18" x="448" y="64" width="32" height="32"/>
@@ -38,7 +38,7 @@
   <object id="48" x="368" y="208" width="32" height="32"/>
   <object id="49" x="320" y="304" width="80" height="32"/>
  </objectgroup>
- <objectgroup name="generador">
+ <objectgroup id="5" name="generador">
   <object id="53" x="176" y="32" width="16" height="16">
    <properties>
     <property name="tipo" type="int" value="0"/>
@@ -46,7 +46,7 @@
   </object>
   <object id="54" x="544" y="16" width="16" height="16">
    <properties>
-    <property name="tipo" type="int" value="0"/>
+    <property name="tipo" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

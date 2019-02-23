@@ -19,10 +19,8 @@ import com.mygdx.game.util.Constant;
 public class BalaEnemy extends DinamicBody {
 
     public boolean active;
-    public float velocidad= 2f;
+    public float velocidad= 3f;
     public GameScreen gameScreen;
-
-    private Vector2 direccion;
 
     // Animaciones
     private Animation<TextureRegion> animacionFrente;
@@ -35,12 +33,11 @@ public class BalaEnemy extends DinamicBody {
     private Estados ultimoEstado;
     private Estados estadoActual;
 
-    public BalaEnemy(TiledMap map, World world, Rectangle bounds, Vector2 direccion, GameScreen gameScreen) {
+    public BalaEnemy(TiledMap map, World world, Rectangle bounds, GameScreen gameScreen) {
         super(map, world, bounds, null);
 
         this.gameScreen = gameScreen;
         active = false;
-        this.direccion = direccion;
         fdef.filter.categoryBits = 128;
         fdef.filter.maskBits = 1 + 2; // 1 muros, 2 main character
         createBody();
@@ -91,18 +88,18 @@ public class BalaEnemy extends DinamicBody {
        // body.setLinearVelocity(direccion.x, direccion.y);
 
         if (body.getPosition().x < gameScreen.levelManager.player.body.getPosition().x) {
-         //   body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
-            body.setLinearVelocity(direccion.x, direccion.y);
+            body.setLinearVelocity(velocidad, body.getLinearVelocity().y);
+
         } else if (body.getPosition().x > gameScreen.levelManager.player.body.getPosition().x) {
-           // body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
-            body.setLinearVelocity(-direccion.x, direccion.y);
+            body.setLinearVelocity(-velocidad, body.getLinearVelocity().y);
+
         }
         if (body.getPosition().y < gameScreen.levelManager.player.body.getPosition().y) {
-           // body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
-            body.setLinearVelocity(direccion.x, direccion.y);
+            body.setLinearVelocity(body.getLinearVelocity().x, velocidad);
+
         } else if (body.getPosition().y > gameScreen.levelManager.player.body.getPosition().y) {
-         //   body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
-            body.setLinearVelocity(direccion.x, -direccion.y);
+            body.setLinearVelocity(body.getLinearVelocity().x, -velocidad);
+
         }
 
         if (Math.abs(body.getLinearVelocity().y) < Math.abs(body.getLinearVelocity().x)) {

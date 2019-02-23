@@ -85,8 +85,6 @@ public class Enem1 extends Enemy {
 
     @Override
     public void update(float dt) {
-
-
         if (time <= 0) {
             time = MathUtils.random(0.3f, 2f);
 
