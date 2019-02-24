@@ -45,7 +45,7 @@ public class Player extends DinamicBody {
     private Animation<TextureRegion> animacionIzquierda;
     private float progresoAnimacion = 0;
 
-    private float vidaBase = 100;
+    public float vidaBase = 100;
     public Player(TiledMap map, World world, Rectangle bounds, GameScreen gameScreen) {
         super(map, world, bounds, ResourceManager.getAtlas("core/assets/personajes/personajePrincipal/mainCharacter.pack").findRegion("frente"));
 

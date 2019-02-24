@@ -63,7 +63,6 @@ public class Enem2 extends Enemy {
     public void onContact(Contact contact) {
         if (contact.getFixtureA().getFilterData().categoryBits == 4 || contact.getFixtureA().getFilterData().categoryBits == 64) {
             vida--;
-            System.out.println(vida);
             if (vida <= 0) {
                 toDestroy = true;
                 gameScreen.levelManager.player.aniquilados++;

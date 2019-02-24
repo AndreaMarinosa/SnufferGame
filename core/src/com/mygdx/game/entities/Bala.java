@@ -66,7 +66,7 @@ public class Bala extends DinamicBody {
     public void draw(float dt, Batch batch) {
         //super.draw(batch);
         TextureRegion tg =getFrame(dt);
-        batch.draw(tg,body.getPosition().x, body.getPosition().y, tg.getRegionWidth()/6/ Constant.PPM,tg.getRegionHeight()/6/ Constant.PPM);
+        batch.draw(tg,body.getPosition().x - 4/ Constant.PPM, body.getPosition().y, tg.getRegionWidth()/4/ Constant.PPM,tg.getRegionHeight()/4/ Constant.PPM);
     }
 
     @Override

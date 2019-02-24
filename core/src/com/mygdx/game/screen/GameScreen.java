@@ -22,11 +22,11 @@ public class GameScreen implements Screen {
     public final Box2DDebugRenderer b2dr;
     public final World world;
     private final boolean gameOver;
-    public BitmapFont font = new BitmapFont();
     public OrthogonalTiledMapRenderer mapRenderer;
     public SGame game;
     private InputManager inputManager;
     private InputMultiplexer multiplexer;
+    private Hud hud;
 
     public GameScreen(SGame game, String mapa) {
         this.game = game;
@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(inputManager);
         Gdx.input.setInputProcessor(multiplexer);
-
+        hud = new Hud(this);
 
         if (ConfigurationManager.isMusicEnabled())
             MusicManager.playMusica();
@@ -54,8 +54,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
         levelManager.update(delta);
+        hud.update(delta);
+
         world.step(Gdx.graphics.getDeltaTime(), 1, 1);
         mapRenderer.setView(cameraManager.cam);
         cameraManager.cam.update();
@@ -71,8 +72,10 @@ public class GameScreen implements Screen {
         levelManager.render(delta, game.batch);
 
         game.batch.end();
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         levelManager.postRender(delta, game.batch);
-        b2dr.render(world, cameraManager.cam.combined);
+      //  b2dr.render(world, cameraManager.cam.combined);
 
     }
 

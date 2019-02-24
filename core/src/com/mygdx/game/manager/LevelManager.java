@@ -48,8 +48,9 @@ public class LevelManager {
         if (RondaManager.ronda > 0) {
             nuevoJuego();
             RondaManager.nextRonda(gameScreen);
-        } else
+        } else {
             RondaManager.nextRonda(gameScreen);
+        }
 
         loadMap();
     }
@@ -73,7 +74,6 @@ public class LevelManager {
         }
         for (MapObject object : map.getLayers().get("generador").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            System.out.println(rect.x + ", " + rect.y);
             if (object.getProperties().get("tipo", Integer.class) == 1) {
                 generadores.add(new Enemigo2(gameScreen, new Vector2(rect.x, rect.y)));
             } else {
@@ -190,6 +190,7 @@ public class LevelManager {
 
     public void nuevoJuego() {
         RondaManager.ronda = 0;
+        player.vida = player.vidaBase;
         player.aniquilados = 0;
         player.fireRate = 0.2f;
     }

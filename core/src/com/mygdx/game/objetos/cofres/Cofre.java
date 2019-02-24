@@ -29,10 +29,9 @@ public class Cofre extends StaticBody {
 
     @Override
     public void draw(float dt, Batch batch) {
-        batch.draw(tg, body.getPosition().x-6/Constant.PPM, body.getPosition().y-4/Constant.PPM,
-                tg.getWidth()/ Constant.PPM, tg.getHeight()/ Constant.PPM);
+        batch.draw(tg, body.getPosition().x-18/Constant.PPM, body.getPosition().y-10/Constant.PPM,
+                tg.getWidth()*2/ Constant.PPM, tg.getHeight()*2/ Constant.PPM);
     }
-
     public void destroyBody(){
         screen.world.destroyBody(body);
     }
